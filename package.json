@@ -1,0 +1,8 @@
+{
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "prettier": "3"
+  }
+}
