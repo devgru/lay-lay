@@ -1,5 +1,4 @@
 import {
-  MutableRefObject,
   RefObject,
   useId,
   useLayoutEffect,
@@ -18,8 +17,8 @@ import {
 const NOOP = () => {};
 
 export const useSvgRootRef = <E extends SVGOrHTMLElement>(
-  rootRef: RefObject<E> = useRef<E>(null),
-): RefObject<E> => {
+  rootRef: RefObject<E | null> = useRef<E>(null),
+): RefObject<E | null> => {
   ROOT_RECT_MAP.delete(rootRef.current as any);
 
   return rootRef;
@@ -27,8 +26,8 @@ export const useSvgRootRef = <E extends SVGOrHTMLElement>(
 
 export const useRefWithGuidesAttached = <E extends SVGOrHTMLElement>(
   guides: GuidesAttachment,
-  ref: RefObject<E> = useRef<E>(null),
-): RefObject<E> => {
+  ref: RefObject<E | null> = useRef<E>(null),
+): RefObject<E | null> => {
   useLayoutEffect(() => {
     const element = ref.current;
     if (element == undefined) {
@@ -104,7 +103,7 @@ export const useGuide = (
 
   const id = useId();
 
-  const guideRef: MutableRefObject<Guide | null> = useRef<Guide>(null);
+  const guideRef: RefObject<Guide | null> = useRef<Guide>(null);
 
   if (guideRef.current === null) {
     function guide(): number;
