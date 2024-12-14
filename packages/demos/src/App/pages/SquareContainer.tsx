@@ -11,12 +11,10 @@ export const SquareContainer = () => {
   useWindowSize();
 
   return (
-    <>
-      <svg
-        height={widthGuide()}
-        style={{ background: '#585', width: '100%' }}
-        ref={useSvgRootRef(useRefWithGuidesAttached({ right: widthGuide }))}
-      ></svg>
-    </>
+    <svg
+      height={widthGuide()}
+      style={{ background: '#585', width: '100%' }}
+      ref={useSvgRootRef(useRefWithGuidesAttached({ right: widthGuide }))}
+    />
   );
 };

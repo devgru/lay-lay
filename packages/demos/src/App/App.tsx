@@ -1,10 +1,10 @@
 import './App.css';
 
 import { createHashRouter, RouterProvider } from 'react-router-dom';
-import { Center } from '../routes/Center.tsx';
-import { SquareContainer } from '../routes/SquareContainer.tsx';
-import { Rects } from '../routes/Rects.tsx';
-import { Root } from '../routes/Root.tsx';
+import { Center } from './pages/Center.tsx';
+import { SquareContainer } from './pages/SquareContainer.tsx';
+import { Rects } from './pages/Rects.tsx';
+import { Index } from './pages/Index.tsx';
 
 const router = createHashRouter([
   {
@@ -21,7 +21,7 @@ const router = createHashRouter([
   },
   {
     path: '/',
-    element: <Root />,
+    element: <Index />,
   },
 ]);
 
