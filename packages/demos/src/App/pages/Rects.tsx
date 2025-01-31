@@ -40,7 +40,7 @@ export const Rects = () => {
       />
       <br />
       <SVG
-        guidesAttachment={{ right: svgRight, bottom: svgBottom }}
+        guidesAttachment={{ width: svgRight, height: svgBottom }}
         width={width}
         height={height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
@@ -49,7 +49,7 @@ export const Rects = () => {
           width={foWidth}
           height={hGuide()}
           fontSize={30}
-          guidesAttachment={{ right: wGuide, bottom: hGuide }}
+          guidesAttachment={{ width: wGuide, height: hGuide }}
         >
           <div style={{ border: '1px solid red' }}>
             The width is {width}

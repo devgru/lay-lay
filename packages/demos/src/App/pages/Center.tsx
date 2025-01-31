@@ -26,7 +26,7 @@ export const Center = () => {
         }}
       >
         <HTML
-          guidesAttachment={{ bottom: height }}
+          guidesAttachment={{ height }}
           width="100%"
           height={height()}
         >

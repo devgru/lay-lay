@@ -18,6 +18,8 @@ export type GuidesAttachment = {
   left?: Guide;
   horizontalCenter?: Guide;
   right?: Guide;
+  width?: Guide;
+  height?: Guide;
   more?: GuidesAttachment;
 };
 

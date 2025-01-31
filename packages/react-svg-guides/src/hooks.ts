@@ -62,6 +62,14 @@ export const useRefWithGuidesAttached = <E extends SVGOrHTMLElement>(
         nextGuides.bottom(y + height);
         horizontalGuides.add(nextGuides.bottom);
       }
+      if (nextGuides.width) {
+        nextGuides.width(width);
+        verticalGuides.add(nextGuides.width);
+      }
+      if (nextGuides.height) {
+        nextGuides.height(height);
+        horizontalGuides.add(nextGuides.height);
+      }
       nextGuides = nextGuides.more;
     }
   });

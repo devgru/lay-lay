@@ -10,7 +10,7 @@ export const SquareContainer = () => {
     <SVG
       height={widthGuide()}
       style={{ background: '#585', width: '100%' }}
-      guidesAttachment={{ right: widthGuide }}
+      guidesAttachment={{ width: widthGuide }}
     />
   );
 };
