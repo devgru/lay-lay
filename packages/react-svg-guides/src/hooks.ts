@@ -1,57 +1,38 @@
+import { RefObject, useId, useLayoutEffect, useRef, useState } from 'react';
+
 import {
-  RefObject,
-  useId,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
-
-import { Guide, GuideArgs, GuidesAttachment, SVGOrHTMLElement } from './types';
-import { getCachedRootRect, getSvgRoot } from './util.ts';
-import {
-  HORIZONTAL_GUIDES_MAP,
-  ROOT_RECT_MAP,
-  VERTICAL_GUIDES_MAP,
-} from './constants.ts';
-
-const NOOP = () => {};
-
-export const useSvgRootRef = <E extends SVGOrHTMLElement>(
-  rootRef: RefObject<E | null> = useRef<E>(null),
-): RefObject<E | null> => {
-  ROOT_RECT_MAP.delete(rootRef.current as any);
-
-  return rootRef;
-};
+  Guide,
+  GuideArgs,
+  GuidesAttachment,
+  GuidesState,
+  SVGOrHTMLElement,
+} from './types';
+import { requestGuidesState } from './events.tsx';
 
 export const useRefWithGuidesAttached = <E extends SVGOrHTMLElement>(
   guides: GuidesAttachment,
   ref: RefObject<E | null> = useRef<E>(null),
 ): RefObject<E | null> => {
+  const guidesStateRef = useRef<GuidesState | null>(null);
+
   useLayoutEffect(() => {
     const element = ref.current;
-    if (element == undefined) {
+    if (element === null) {
       return;
     }
-    const root = getSvgRoot(element);
-    const rootRect = getCachedRootRect(root);
-
-    let verticalGuides: Set<Guide>;
-    if (VERTICAL_GUIDES_MAP.has(root)) {
-      verticalGuides = VERTICAL_GUIDES_MAP.get(root)!;
-    } else {
-      verticalGuides = new Set<Guide>();
-      VERTICAL_GUIDES_MAP.set(root, verticalGuides);
-    }
-    let horizontalGuides: Set<Guide>;
-    if (HORIZONTAL_GUIDES_MAP.has(root)) {
-      horizontalGuides = HORIZONTAL_GUIDES_MAP.get(root)!;
-    } else {
-      horizontalGuides = new Set<Guide>();
-      HORIZONTAL_GUIDES_MAP.set(root, horizontalGuides);
+    if (guidesStateRef.current === null) {
+      requestGuidesState(element, guidesState => {
+        guidesStateRef.current = guidesState;
+      });
+      if (guidesStateRef.current === null) {
+        return;
+      }
     }
 
-    const { left, top, width, height } = element.getBoundingClientRect();
+    const { getRootRect, verticalGuides, horizontalGuides } = guidesStateRef.current;
+    const rootRect = getRootRect();
+    const elementRect = element.getBoundingClientRect();
+    const { left, top, width, height } = elementRect;
     const x = left - rootRect.left;
     const y = top - rootRect.top;
 
@@ -90,19 +71,11 @@ export const useRefWithGuidesAttached = <E extends SVGOrHTMLElement>(
 
 export const useGuide = (
   handle: string,
-  { defaultValue, setValue }: Partial<GuideArgs> = {},
+  { setValue, defaultValue = 0 }: Partial<GuideArgs> = {},
 ): Guide => {
-  defaultValue = defaultValue ?? 0;
-  setValue = setValue ?? NOOP;
-
-  // store actual value
   const ref = useRef<number>(defaultValue);
-
-  // force rerender when value changes
   const [, updateIfChanged] = useState<number>(defaultValue);
-
   const id = useId();
-
   const guideRef: RefObject<Guide | null> = useRef<Guide>(null);
 
   if (guideRef.current === null) {
@@ -113,9 +86,7 @@ export const useGuide = (
         return ref.current;
       }
       ref.current = value;
-      if (setValue) {
-        setValue(value, handle);
-      }
+      setValue?.(value, handle);
       updateIfChanged(value);
     }
 
@@ -128,7 +99,7 @@ export const useGuide = (
 };
 
 export const useGuides = (
-  args?: GuideArgs,
+  args?: Partial<GuideArgs>,
 ): {
   [key: string]: Guide;
 } =>

@@ -3,9 +3,9 @@ import {
   Guide,
   GuidesDebug,
   HTML,
+  SVG,
   useGuides,
   useRefWithGuidesAttached,
-  useSvgRootRef,
 } from 'react-svg-guides';
 
 export const Rects = () => {
@@ -39,10 +39,8 @@ export const Rects = () => {
         onChange={e => setFoWidth(parseInt(e.target.value))}
       />
       <br />
-      <svg
-        ref={useSvgRootRef(
-          useRefWithGuidesAttached({ right: svgRight, bottom: svgBottom }),
-        )}
+      <SVG
+        guidesAttachment={{ right: svgRight, bottom: svgBottom }}
         width={width}
         height={height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
@@ -67,7 +65,7 @@ export const Rects = () => {
           <Rect left={rect1Guide()} top={0} rightGuide={rect2Guide} />
         </g>
         <GuidesDebug />
-      </svg>
+      </SVG>
     </>
   );
 };

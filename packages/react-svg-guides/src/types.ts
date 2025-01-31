@@ -6,6 +6,11 @@ export type Guide = {
   handle: string;
 };
 
+export type GuideArgs = {
+  setValue: (value: number, handle: string) => void;
+  defaultValue: number;
+};
+
 export type GuidesAttachment = {
   top?: Guide;
   verticalCenter?: Guide;
@@ -18,7 +23,10 @@ export type GuidesAttachment = {
 
 export type SVGOrHTMLElement = SVGElement | HTMLElement;
 
-export type GuideArgs = {
-  defaultValue?: number;
-  setValue?: (value: number, name: string) => void;
+export type GuidesState = {
+  getRootRect: (force?: boolean) => DOMRect;
+  verticalGuides: Set<Guide>;
+  horizontalGuides: Set<Guide>;
 };
+
+export type GuidesStateRequestCallback = (state: GuidesState) => void;
