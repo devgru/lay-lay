@@ -23,6 +23,6 @@ dist
 *.sln
 *.sw?
 
-bun.lockb
+bun.lock
 
 packages/react-svg-guides/README.md
