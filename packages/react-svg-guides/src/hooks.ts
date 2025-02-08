@@ -1,121 +1,90 @@
-import { RefObject, useId, useLayoutEffect, useRef, useState } from 'react';
+import { RefObject, useLayoutEffect, useRef, useState } from 'react';
 
 import {
-  Guide,
-  GuideArgs,
-  GuidesAttachment,
-  GuidesState,
+  GetRootRect,
+  RefObjectWithBox,
+  RefObjectWithSize,
   SVGOrHTMLElement,
 } from './types';
-import { requestGuidesState } from './events.tsx';
+import { requestRootRectAccessor } from './events.tsx';
 
-export const useRefWithGuidesAttached = <E extends SVGOrHTMLElement>(
-  guides: GuidesAttachment,
-  ref: RefObject<E | null> = useRef<E>(null),
-): RefObject<E | null> => {
-  const guidesStateRef = useRef<GuidesState | null>(null);
-
+export const useRefWithSize = <E extends SVGOrHTMLElement>(
+  ref: RefObject<E | null> = useRef(null),
+): RefObjectWithSize<E> => {
+  const [width, updateWidth] = useState<number>(0);
+  const [height, updateHeight] = useState<number>(0);
+  const internalRef: RefObjectWithSize<E> =
+    ref as any as RefObjectWithSize<E>;
+  internalRef.width = width;
+  internalRef.height = height;
   useLayoutEffect(() => {
-    const element = ref.current;
+    const element = internalRef.current;
     if (element === null) {
       return;
     }
-    if (guidesStateRef.current === null) {
-      requestGuidesState(element, guidesState => {
-        guidesStateRef.current = guidesState;
-      });
-      if (guidesStateRef.current === null) {
-        return;
-      }
-    }
 
-    const { getRootRect, verticalGuides, horizontalGuides } = guidesStateRef.current;
-    const rootRect = getRootRect();
-    const elementRect = element.getBoundingClientRect();
-    const { left, top, width, height } = elementRect;
-    const x = left - rootRect.left;
-    const y = top - rootRect.top;
+    const { width, height } = element.getBoundingClientRect();
 
-    let nextGuides: GuidesAttachment | undefined = guides;
-    while (nextGuides !== undefined) {
-      if (nextGuides.left) {
-        nextGuides.left(x);
-        verticalGuides.add(nextGuides.left);
-      }
-      if (nextGuides.horizontalCenter) {
-        nextGuides.horizontalCenter(x + width / 2);
-        verticalGuides.add(nextGuides.horizontalCenter);
-      }
-      if (nextGuides.right) {
-        nextGuides.right(x + width);
-        verticalGuides.add(nextGuides.right);
-      }
-      if (nextGuides.top) {
-        nextGuides.top(y);
-        horizontalGuides.add(nextGuides.top);
-      }
-      if (nextGuides.verticalCenter) {
-        nextGuides.verticalCenter(y + height / 2);
-        horizontalGuides.add(nextGuides.verticalCenter);
-      }
-      if (nextGuides.bottom) {
-        nextGuides.bottom(y + height);
-        horizontalGuides.add(nextGuides.bottom);
-      }
-      if (nextGuides.width) {
-        nextGuides.width(width);
-        verticalGuides.add(nextGuides.width);
-      }
-      if (nextGuides.height) {
-        nextGuides.height(height);
-        horizontalGuides.add(nextGuides.height);
-      }
-      nextGuides = nextGuides.more;
-    }
+    updateWidth(width);
+    updateHeight(height);
   });
 
-  return ref;
+  return internalRef;
 };
 
-export const useGuide = (
-  handle: string,
-  { setValue, defaultValue = 0 }: Partial<GuideArgs> = {},
-): Guide => {
-  const ref = useRef<number>(defaultValue);
-  const [, updateIfChanged] = useState<number>(defaultValue);
-  const id = useId();
-  const guideRef: RefObject<Guide | null> = useRef<Guide>(null);
+export const useRefWithBox = <E extends SVGOrHTMLElement>(
+  ref: RefObject<E | null> = useRef(null),
+): RefObjectWithBox<E> => {
+  const [width, updateWidth] = useState<number>(0);
+  const [height, updateHeight] = useState<number>(0);
+  const [left, updateLeft] = useState<number>(0);
+  const [horizontalCenter, updateHorizontalCenter] = useState<number>(0);
+  const [right, updateRight] = useState<number>(0);
+  const [top, updateTop] = useState<number>(0);
+  const [verticalCenter, updateVerticalCenter] = useState<number>(0);
+  const [bottom, updateBottom] = useState<number>(0);
 
-  if (guideRef.current === null) {
-    function guide(): number;
-    function guide(value: number): void;
-    function guide(value?: number) {
-      if (value === undefined) {
-        return ref.current;
-      }
-      ref.current = value;
-      setValue?.(value, handle);
-      updateIfChanged(value);
+  const getRootRectRef = useRef<GetRootRect | null>(null);
+  const internalRef: RefObjectWithBox<E> =
+    ref as any as RefObjectWithBox<E>;
+  internalRef.width = width;
+  internalRef.height = height;
+  internalRef.left = left;
+  internalRef.horizontalCenter = horizontalCenter;
+  internalRef.right = right;
+  internalRef.top = top;
+  internalRef.verticalCenter = verticalCenter;
+  internalRef.bottom = bottom;
+
+  useLayoutEffect(() => {
+    const element = internalRef.current;
+    if (element === null) {
+      return;
     }
 
-    guide.id = id;
-    guide.handle = handle;
-    guideRef.current = guide;
-  }
+    if (getRootRectRef.current === null) {
+      requestRootRectAccessor(element, getRootRect => {
+        getRootRectRef.current = getRootRect;
+      });
+      if (getRootRectRef.current === null) {
+        getRootRectRef.current = () => null;
+      }
+    }
 
-  return guideRef.current;
+    const { left, top, width, height } = element.getBoundingClientRect();
+    const rootRect = getRootRectRef.current();
+    const x = left - (rootRect?.left ?? 0);
+    const y = top - (rootRect?.top ?? 0);
+
+    updateWidth(width);
+    updateHeight(height);
+    updateLeft(x);
+    updateHorizontalCenter(x + width / 2);
+    updateRight(x + width);
+    updateTop(y);
+    updateVerticalCenter(y + height / 2);
+    updateBottom(y + height);
+  });
+
+  return internalRef;
 };
-
-export const useGuides = (
-  args?: Partial<GuideArgs>,
-): {
-  [key: string]: Guide;
-} =>
-  new Proxy(
-    {},
-    {
-      get(_, name) {
-        return typeof name === 'string' ? useGuide(name, args) : undefined;
-      },
-    },
-  );

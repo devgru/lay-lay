@@ -1,16 +1,16 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
-import { SVG, useGuides } from 'react-svg-guides';
+import { useRefWithSize } from 'react-svg-guides';
 
 export const SquareContainer = () => {
-  const { widthGuide } = useGuides();
+  const ref = useRefWithSize<SVGSVGElement>();
 
   useWindowSize();
 
   return (
-    <SVG
-      height={widthGuide()}
+    <svg
+      height={ref.width}
       style={{ background: '#585', width: '100%' }}
-      guidesAttachment={{ width: widthGuide }}
+      ref={ref}
     />
   );
 };

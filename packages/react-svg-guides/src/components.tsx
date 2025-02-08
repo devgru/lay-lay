@@ -1,60 +1,46 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Guide, GuidesAttachment } from './types';
-import { useRefWithGuidesAttached } from './hooks';
-import { ardov } from './constants.ts';
-import { GuidesStateRequestEvent, requestGuidesState } from './events.tsx';
-import { GUIDES_STATE_REQUEST_EVENT } from './constants';
+import React, { RefObject, useLayoutEffect, useRef } from 'react';
+import { RequestRootRectAccessorEvent } from './events.tsx';
+import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './constants';
 
 export const SVG = ({
   children,
-  guidesAttachment = {},
+  ref = useRef(null),
   ...props
 }: {
-  guidesAttachment?: GuidesAttachment;
+  ref: RefObject<SVGSVGElement | null>;
 } & React.SVGAttributes<SVGSVGElement>) => {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [verticalGuides] = useState(() => new Set<Guide>());
-  const [horizontalGuides] = useState(() => new Set<Guide>());
-
-  const rectCache = useRef<DOMRect>(null);
-  rectCache.current = null;
+  const rootRectCache = useRef<DOMRect>(null);
+  rootRectCache.current = null;
 
   useLayoutEffect(() => {
-    const svg = svgRef.current!;
+    const rootSvg = ref.current!;
 
     const handleGuidesStateRequest = (e: Event) => {
-      if (!(e instanceof GuidesStateRequestEvent)) {
+      if (!(e instanceof RequestRootRectAccessorEvent)) {
         return;
       }
 
-      e.callback({
-        getRootRect: (force = false) => {
-          if (!rectCache.current) {
-            if (force) {
-              return svg.getBoundingClientRect();
-            }
-            rectCache.current = svg.getBoundingClientRect();
-          }
+      e.callback(() => {
+        if (!rootRectCache.current) {
+          rootRectCache.current = rootSvg.getBoundingClientRect();
+        }
 
-          return rectCache.current;
-        },
-        verticalGuides,
-        horizontalGuides,
+        return rootRectCache.current;
       });
 
       e.stopPropagation();
     };
 
-    svg.addEventListener(GUIDES_STATE_REQUEST_EVENT, handleGuidesStateRequest);
+    rootSvg.addEventListener(REQUEST_ROOT_RECT_ACCESSOR_EVENT, handleGuidesStateRequest);
     return () =>
-      svg.removeEventListener(
-        GUIDES_STATE_REQUEST_EVENT,
+      rootSvg.removeEventListener(
+        REQUEST_ROOT_RECT_ACCESSOR_EVENT,
         handleGuidesStateRequest,
       );
   }, []);
 
   return (
-    <svg {...props} ref={useRefWithGuidesAttached(guidesAttachment, svgRef)}>
+    <svg {...props} ref={ref}>
       {children}
     </svg>
   );
@@ -62,84 +48,12 @@ export const SVG = ({
 
 export const HTML = ({
   children,
-  guidesAttachment = {},
-  ...rest
+  ref = useRef(null),
+  ...props
 }: {
-  guidesAttachment?: GuidesAttachment;
+  ref?: RefObject<HTMLDivElement | null>;
 } & React.SVGAttributes<SVGForeignObjectElement>) => (
-  <foreignObject {...rest}>
-    <div ref={useRefWithGuidesAttached(guidesAttachment)}>{children}</div>
+  <foreignObject {...props}>
+    <div ref={ref}>{children}</div>
   </foreignObject>
 );
-
-const defaultAttributes = {
-  stroke: 'color(display-p3 2 2 2)',
-  strokeDasharray: '3 5',
-};
-
-export const GuidesDebug = ({
-  attributes,
-}: {
-  attributes?: React.SVGAttributes<SVGLineElement>;
-}) => {
-  const ref = useRef<SVGGElement>(null);
-  const guidesRef = useRef<{
-    getRootRect: (force?: boolean) => DOMRect | null;
-    verticalGuides: Set<Guide>;
-    horizontalGuides: Set<Guide>;
-  }>({
-    getRootRect: () => null,
-    verticalGuides: new Set(),
-    horizontalGuides: new Set(),
-  });
-
-  useLayoutEffect(() => {
-    const element = ref.current;
-
-    requestGuidesState(element!, guidesState => {
-      guidesRef.current = guidesState;
-    });
-  });
-
-  const { getRootRect, verticalGuides, horizontalGuides } = guidesRef.current;
-  let body = null;
-  const rootRect = getRootRect(true);
-
-  if (rootRect && (verticalGuides.size > 0 || horizontalGuides.size > 0)) {
-    body = (
-      <g>
-        <image width="1" height="1" href={ardov} x="-1" y="-1" />
-        {Array.from(horizontalGuides).map(guide => {
-          const y = guide();
-          return (
-            <line
-              {...defaultAttributes}
-              {...attributes}
-              key={guide.id}
-              x1={0}
-              y1={y}
-              x2={rootRect.width}
-              y2={y}
-            />
-          );
-        })}
-        {Array.from(verticalGuides).map(guide => {
-          const x = guide();
-          return (
-            <line
-              {...defaultAttributes}
-              {...attributes}
-              key={guide.id}
-              x1={x}
-              y1={0}
-              x2={x}
-              y2={rootRect.height}
-            />
-          );
-        })}
-      </g>
-    );
-  }
-
-  return <g ref={ref}>{body}</g>;
-};

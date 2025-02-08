@@ -1,13 +1,9 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
-import {
-  GuidesDebug,
-  HTML,
-  SVG,
-  useGuides,
-} from 'react-svg-guides';
+import { HTML, SVG, useRefWithSize } from 'react-svg-guides';
 
 export const Center = () => {
-  const { hCenterGuide, vCenterGuide, height } = useGuides();
+  const svgRef = useRefWithSize<SVGSVGElement>();
+  const foRef = useRefWithSize<HTMLDivElement>();
 
   useWindowSize();
 
@@ -15,21 +11,14 @@ export const Center = () => {
     <>
       <p>
         SVG size is defined by HTML contents, SVG container exposes its center
-        via two guides
+        via ref.
       </p>
       <SVG
+        ref={svgRef}
         style={{ background: '#eee', width: '100%' }}
-        height={height()}
-        guidesAttachment={{
-          horizontalCenter: hCenterGuide,
-          verticalCenter: vCenterGuide,
-        }}
+        height={foRef.height}
       >
-        <HTML
-          guidesAttachment={{ height }}
-          width="100%"
-          height={height()}
-        >
+        <HTML width="100%" ref={foRef} height={foRef.height}>
           <p
             style={{
               margin: 0,
@@ -38,11 +27,10 @@ export const Center = () => {
           >
             Hello!
             <br />
-            This is a multiline text
-            that is centered in the SVG container within a foreignObject.
+            This is a multiline text that is centered in the SVG container
+            within a foreignObject.
           </p>
         </HTML>
-        <GuidesDebug />
       </SVG>
     </>
   );

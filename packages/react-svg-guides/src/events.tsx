@@ -1,12 +1,15 @@
-import { GuidesStateRequestCallback } from './types';
-import { GUIDES_STATE_REQUEST_EVENT } from './constants';
+import { SetRootRectAccessor } from './types';
+import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './constants';
 
-export class GuidesStateRequestEvent extends Event {
-  constructor(public callback: GuidesStateRequestCallback) {
-    super(GUIDES_STATE_REQUEST_EVENT, { bubbles: true });
+export class RequestRootRectAccessorEvent extends Event {
+  constructor(public callback: SetRootRectAccessor) {
+    super(REQUEST_ROOT_RECT_ACCESSOR_EVENT, { bubbles: true });
   }
 }
 
-export const requestGuidesState = (element: Element, callback: GuidesStateRequestCallback) => {
-  element.dispatchEvent(new GuidesStateRequestEvent(callback));
+export const requestRootRectAccessor = (
+  element: Element,
+  callback: SetRootRectAccessor,
+) => {
+  element.dispatchEvent(new RequestRootRectAccessorEvent(callback));
 };

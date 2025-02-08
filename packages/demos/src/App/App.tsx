@@ -38,7 +38,6 @@ const App = () => (
     <nav>
       <a href="#">What it's all about</a> • <a href="#rects">Pushing rects</a> •{' '}
       <a href="#square-container">Square container</a> •{' '}
-      <a href="#axes">Axes</a> •{' '}
       <a href="#center">Center Line</a>
     </nav>
     <RouterProvider router={router} />

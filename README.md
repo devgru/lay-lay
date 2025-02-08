@@ -2,132 +2,108 @@
 
 > While HTML supports a variety of layout techniques, SVG is more limited in this regard.
 > 
-> To enable more complex SVG-based layouts, this library provides a set of React hooks and components to implement a concept of Guides in SVG.
->
-> Guides are used to track SVG elements' measurements and expose them via React hooks.
+> The library provides a set of React hooks and components to capture SVG elements' measurements and expose them via refs, enabling complex SVG-based layouts building.
 
 Explore `demos` package for a glimpse of what this library can help with.
 
-## How to use Guides
+## Usage
 
-1. Use `SVG` component to create a root SVG element. It will provide a starting point for all measurements. It is also possible to attach Guides to `SVG` element via `guidesAttachment` property.
+### Size measurement
 
-2. Use `HTML` component to create a `foreignObject` element that will support Guides attachment. This helps to build layouts utilizing both SVG and HTML elements.
-
-2. Use `useGuide` or `useGuides` hook to create guides.
-
-3. Attach guides to any SVG element via `useRefWithGuidesAttached` hook.
+1. Use `useRefWithSize` hook to track element's width and height:
 
 ```typescript jsx
-import { SVG, useGuides } from 'react-svg-guides';
+import { useRefWithSize } from 'react-svg-guides';
 
-// widthGuide() will return the width of the SVG element,
-// following the attachment to its right side.
-const { widthGuide } = useGuides();
+const circleRef = useRefWithSize<SVGCircleElement>();
+return (
+  <svg width={circleRef.width} height={circleRef.height}>
+    <circle
+      ref={circleRef}
+      r={10}
+      cx={10}
+      cy={10}
+      fill="currentColor"
+    />
+  </svg>
+);
+```
+
+2. To combine `svg` and `html` elements, use `HTML` component. It renders as a `div` within a `foreignObject`, the `ref` is attached to the `div`:
+
+```typescript jsx
+import { HTML, useRefWithSize } from 'react-svg-guides';
+
+const divRef = useRefWithSize<HTMLDivElement>();
+return (
+  <svg width={divRef.width} height={divRef.height}>
+    <HTML ref={divRef}>
+      foreignObject inside SVG
+    </HTML>
+  </svg>
+);
+```
+
+### Position measurement
+
+1. Use `useRefWithBox` hook to track both element's size and position:
+
+```typescript jsx
+import { useRefWithBox } from 'react-svg-guides';
+
+const circleRef = useRefWithBox<SVGCircleElement>();
+return (
+  <svg width={circleRef.width} height={circleRef.height}>
+    <circle
+      ref={circleRef}
+      r={10}
+      cx={10}
+      cy={10}
+      fill="currentColor"
+    />
+  </svg>
+);
+```
+
+2. Optionally use `SVG` component to switch the origin point for boxes, from the page's origin to the `SVG` element's origin:
+
+```typescript jsx
+import { SVG, HTML, useRefWithBox } from 'react-svg-guides';
+
+const divRef = useRefWithBox<HTMLDivElement>();
 
 return (
-  <SVG
-    height={widthGuide()}
-    style={{ background: '#585', width: '100%' }}
-    guidesAttachment={{ width: widthGuide }}
-/>
+  <SVG>
+    <HTML ref={divRef}>
+      foreignObject inside SVG
+    </HTML>
+  </SVG>
 );
 ```
 
 ## Types
 
-A *Guide* is encapsulating a numeric value. It is implemented as a function that can be called with a value to update it, or without a value to read current value.
-
-
 ```typescript
-type Guide = {
-  (): number;
-  (v: number): void;
-
-  id: string;
-  name: string;
-};
-```
-
-A *guides attachment* lists Guides that are *attached* to an element. To attach several guides to one coordinate, use `more` property to chain another `GuidesAttachment`.
-
-```typescript
-type GuidesAttachment = {
-  top?: Guide;
-  verticalCenter?: Guide;
-  bottom?: Guide;
-  left?: Guide;
-  horizontalCenter?: Guide;
-  right?: Guide;
-  width?: Guide;
-  height?: Guide;
-  more?: GuidesAttachment;
-};
-```
-
-## Hooks
-
-### Guide
-
-A single guide can be obtained by calling `useGuide` hook:
-
-```typescript
-declare const useGuide: (defaultValue?: number) => Guide;
-
-const guide = useGuide(0); // optionally set initial value
-
-const moveThings = useCallback(() => {
-  guide(100); // update value
-}, []);
-
-console.log(guide()); // read value
-``` 
-
-A designated way to use guide is to **attach** it via `useRefWithGuidesAttached` hook or, when used on `SVG` or `HTML` components, via `guidesAttachment`. Attached guide is updated when element's corresponding coordinate is changed.
-
-### Named guide
-
-While basic guide is replaceable with e.g. `useState`, named guide has its name set to a variable name it is assigned to.
-
-Named guides are obtained by calling `useGuides` hook with a common initial value:
-
-```typescript
-type GuideArgs = {
-  setValue: (value: number, handle: string) => void;
-  defaultValue: number;
+type RefObjectWithSize<E> = RefObject<E | null> & {
+  width: number;
+  height: number;
 };
 
-declare const useGuides: (args?: Partial<GuideArgs>) => {
-  [key: string]: Guide;
+type RefObjectWithBox<E> = RefObjectWithSize<E> & {
+  left: number;
+  horizontalCenter: number;
+  right: number;
+  top: number;
+  verticalCenter: number;
+  bottom: number;
 };
 
-const {
-  rightGuide,
-  bottomGuide,
-  guideWithAFancyName,
-} = useGuides({ defaultValue: 0 }); // optionally set initial value
+interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
+  ref?: RefObject<HTMLDivElement | null>;
+}
+
+interface SvgProps extends SVGAttributes<SVGSVGElement> {
+  ref: RefObject<SVGSVGElement | null>;
+}
+
 ```
-
-Use `setValue` parameter to debug Guides updates.
-
-## Components
-
-### SVG
-
-```typescript
-declare const SVG: ({ children, guidesAttachment, ...props }: {
-    guidesAttachment?: GuidesAttachment;
-} & React.SVGAttributes<SVGSVGElement>) => JSX.Element;
-```
-
-SVG element which must be used as a root element for all elements with attached guides.
-
-### HTML
-
-```typescript
-declare const HTML: ({ children, guidesAttachment, ...rest }: {
-    guidesAttachment?: GuidesAttachment;
-} & SVGAttributes<SVGForeignObjectElement>) => JSX.Element;
-```
-
-HTML element has similar API with `guidesAttachment` prop. Instead of attaching guides to actual `foreignObject` container, it attaches them to the `div` element inside allowing to follow its measurements.

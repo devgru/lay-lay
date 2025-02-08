@@ -1,28 +1,17 @@
 import { useState } from 'react';
-import {
-  Guide,
-  GuidesDebug,
-  HTML,
-  SVG,
-  useGuides,
-  useRefWithGuidesAttached,
-} from 'react-svg-guides';
+import { useRefWithSize, HTML, RefObjectWithSize } from 'react-svg-guides';
 
 export const Rects = () => {
-  const {
-    rect1Guide,
-    rect2Guide,
-    wGuide,
-    hGuide,
-    bottomGuide,
-    svgRight,
-    svgBottom,
-  } = useGuides();
-
   const [foWidth, setFoWidth] = useState(200);
 
-  const width = Math.max(rect2Guide(), wGuide(), 200);
-  const height = Math.max(bottomGuide(), hGuide());
+  const foRef = useRefWithSize<HTMLDivElement>();
+  const svgRef = useRefWithSize<SVGSVGElement>();
+  const gRef = useRefWithSize<SVGGElement>();
+  const rect1Ref = useRefWithSize<SVGRectElement>();
+  const rect2Ref = useRefWithSize<SVGRectElement>();
+
+  const width = Math.max(rect1Ref.width + rect2Ref.width, foRef.width);
+  const height = foRef.height + gRef.height;
 
   return (
     <>
@@ -39,33 +28,24 @@ export const Rects = () => {
         onChange={e => setFoWidth(parseInt(e.target.value))}
       />
       <br />
-      <SVG
-        guidesAttachment={{ width: svgRight, height: svgBottom }}
+      <svg
+        ref={svgRef}
         width={width}
         height={height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
-        <HTML
-          width={foWidth}
-          height={hGuide()}
-          fontSize={30}
-          guidesAttachment={{ width: wGuide, height: hGuide }}
-        >
+        <HTML ref={foRef} width={foWidth} height={foRef.height} fontSize={30}>
           <div style={{ border: '1px solid red' }}>
             The width is {width}
             <br />
             The height is {height}
           </div>
         </HTML>
-        <g
-          ref={useRefWithGuidesAttached({ bottom: bottomGuide })}
-          transform={`translate(0 ${hGuide()})`}
-        >
-          <Rect left={0} top={0} rightGuide={rect1Guide} />
-          <Rect left={rect1Guide()} top={0} rightGuide={rect2Guide} />
+        <g ref={gRef} transform={`translate(0 ${foRef.height})`}>
+          <Rect ref={rect1Ref} left={0} top={0} />
+          <Rect ref={rect2Ref} left={rect1Ref.width} top={0} />
         </g>
-        <GuidesDebug />
-      </SVG>
+      </svg>
     </>
   );
 };
@@ -73,14 +53,14 @@ export const Rects = () => {
 const Rect = ({
   left,
   top,
-  rightGuide,
+  ref,
 }: {
   left: number;
   top: number;
-  rightGuide: Guide;
+  ref: RefObjectWithSize<SVGRectElement>;
 }) => (
   <rect
-    ref={useRefWithGuidesAttached({ right: rightGuide })}
+    ref={ref}
     x={left}
     y={top}
     width={100}

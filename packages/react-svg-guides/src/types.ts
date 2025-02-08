@@ -1,34 +1,21 @@
-export type Guide = {
-  (): number;
-  (value: number): void;
+import { RefObject } from 'react';
 
-  id: string;
-  handle: string;
+export type RefObjectWithSize<E> = RefObject<E | null> & {
+  width: number;
+  height: number;
 };
 
-export type GuideArgs = {
-  setValue: (value: number, handle: string) => void;
-  defaultValue: number;
-};
-
-export type GuidesAttachment = {
-  top?: Guide;
-  verticalCenter?: Guide;
-  bottom?: Guide;
-  left?: Guide;
-  horizontalCenter?: Guide;
-  right?: Guide;
-  width?: Guide;
-  height?: Guide;
-  more?: GuidesAttachment;
+export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
+  left: number;
+  horizontalCenter: number;
+  right: number;
+  top: number;
+  verticalCenter: number;
+  bottom: number;
 };
 
 export type SVGOrHTMLElement = SVGElement | HTMLElement;
 
-export type GuidesState = {
-  getRootRect: (force?: boolean) => DOMRect;
-  verticalGuides: Set<Guide>;
-  horizontalGuides: Set<Guide>;
-};
+export type GetRootRect = () => DOMRect | null;
 
-export type GuidesStateRequestCallback = (state: GuidesState) => void;
+export type SetRootRectAccessor = (getRootRect: GetRootRect) => void;
