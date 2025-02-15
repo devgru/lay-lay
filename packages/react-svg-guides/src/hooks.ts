@@ -1,22 +1,30 @@
 import { RefObject, useLayoutEffect, useRef, useState } from 'react';
 
 import {
-  GetRootRect,
   RefObjectWithBox,
   RefObjectWithSize,
-  SVGOrHTMLElement,
+
 } from './types';
-import { requestRootRectAccessor } from './events.tsx';
+import { requestRootRectAccessor } from './internal/events.ts';
+import { GetRootRect, SVGOrHTMLElement } from './internal/types.ts';
+
+type RefProps<E> = {
+  ref: RefObject<E | null>;
+  initialValue: number;
+};
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(
-  ref: RefObject<E | null> = useRef(null),
+  props?: Partial<RefProps<E>>,
 ): RefObjectWithSize<E> => {
-  const [width, updateWidth] = useState<number>(0);
-  const [height, updateHeight] = useState<number>(0);
-  const internalRef: RefObjectWithSize<E> =
-    ref as any as RefObjectWithSize<E>;
+  const ref = props?.ref ?? useRef(null);
+  const initialValue = props?.initialValue ?? 0;
+
+  const [width, updateWidth] = useState<number>(initialValue);
+  const [height, updateHeight] = useState<number>(initialValue);
+  const internalRef: RefObjectWithSize<E> = ref as any as RefObjectWithSize<E>;
   internalRef.width = width;
   internalRef.height = height;
+
   useLayoutEffect(() => {
     const element = internalRef.current;
     if (element === null) {
@@ -33,20 +41,23 @@ export const useRefWithSize = <E extends SVGOrHTMLElement>(
 };
 
 export const useRefWithBox = <E extends SVGOrHTMLElement>(
-  ref: RefObject<E | null> = useRef(null),
+  props?: Partial<RefProps<E>>,
 ): RefObjectWithBox<E> => {
-  const [width, updateWidth] = useState<number>(0);
-  const [height, updateHeight] = useState<number>(0);
-  const [left, updateLeft] = useState<number>(0);
-  const [horizontalCenter, updateHorizontalCenter] = useState<number>(0);
-  const [right, updateRight] = useState<number>(0);
-  const [top, updateTop] = useState<number>(0);
-  const [verticalCenter, updateVerticalCenter] = useState<number>(0);
-  const [bottom, updateBottom] = useState<number>(0);
+  const ref = props?.ref ?? useRef(null);
+  const initialValue = props?.initialValue ?? 0;
+
+  const [width, updateWidth] = useState<number>(initialValue);
+  const [height, updateHeight] = useState<number>(initialValue);
+  const [left, updateLeft] = useState<number>(initialValue);
+  const [horizontalCenter, updateHorizontalCenter] =
+    useState<number>(initialValue);
+  const [right, updateRight] = useState<number>(initialValue);
+  const [top, updateTop] = useState<number>(initialValue);
+  const [verticalCenter, updateVerticalCenter] = useState<number>(initialValue);
+  const [bottom, updateBottom] = useState<number>(initialValue);
 
   const getRootRectRef = useRef<GetRootRect | null>(null);
-  const internalRef: RefObjectWithBox<E> =
-    ref as any as RefObjectWithBox<E>;
+  const internalRef: RefObjectWithBox<E> = ref as any as RefObjectWithBox<E>;
   internalRef.width = width;
   internalRef.height = height;
   internalRef.left = left;

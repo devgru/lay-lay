@@ -1,4 +1,4 @@
-import { RefObject } from 'react';
+import type { ReactNode, RefObject, SVGAttributes } from 'react';
 
 export type RefObjectWithSize<E> = RefObject<E | null> & {
   width: number;
@@ -14,8 +14,18 @@ export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
   bottom: number;
 };
 
-export type SVGOrHTMLElement = SVGElement | HTMLElement;
+export interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
+  ref?: RefObject<HTMLDivElement | null>;
+}
 
-export type GetRootRect = () => DOMRect | null;
+export interface SvgProps extends SVGAttributes<SVGSVGElement> {
+  ref: RefObject<SVGSVGElement | null>;
+}
 
-export type SetRootRectAccessor = (getRootRect: GetRootRect) => void;
+export type StackDirection = 'horizontal' | 'vertical';
+
+export interface StackLayoutProps extends SVGAttributes<SVGSVGElement> {
+  children: ReactNode;
+  stackDirection: StackDirection;
+  ref?: RefObject<SVGSVGElement | null>;
+}

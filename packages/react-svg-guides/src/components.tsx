@@ -1,16 +1,29 @@
-import React, { RefObject, useLayoutEffect, useRef } from 'react';
-import { RequestRootRectAccessorEvent } from './events.tsx';
-import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './constants';
+import type { FC } from 'react';
+import React, {
+  Children,
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import { RequestRootRectAccessorEvent } from './internal/events.ts';
+import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
+import {
+  HtmlProps,
+  StackDirection,
+  StackLayoutProps,
+  SvgProps,
+} from './types.ts';
+import { useCacheRef } from './internal/hooks.ts';
+import { StackElement } from './internal/components.tsx';
+import { Size } from './internal/types.ts';
 
-export const SVG = ({
+export const SVG: FC<SvgProps> = ({
   children,
   ref = useRef(null),
   ...props
-}: {
-  ref: RefObject<SVGSVGElement | null>;
-} & React.SVGAttributes<SVGSVGElement>) => {
-  const rootRectCache = useRef<DOMRect>(null);
-  rootRectCache.current = null;
+}) => {
+  const rootRectCache = useCacheRef<DOMRect>();
 
   useLayoutEffect(() => {
     const rootSvg = ref.current!;
@@ -31,7 +44,10 @@ export const SVG = ({
       e.stopPropagation();
     };
 
-    rootSvg.addEventListener(REQUEST_ROOT_RECT_ACCESSOR_EVENT, handleGuidesStateRequest);
+    rootSvg.addEventListener(
+      REQUEST_ROOT_RECT_ACCESSOR_EVENT,
+      handleGuidesStateRequest,
+    );
     return () =>
       rootSvg.removeEventListener(
         REQUEST_ROOT_RECT_ACCESSOR_EVENT,
@@ -46,14 +62,67 @@ export const SVG = ({
   );
 };
 
-export const HTML = ({
+export const HTML: FC<HtmlProps> = ({
   children,
   ref = useRef(null),
   ...props
-}: {
-  ref?: RefObject<HTMLDivElement | null>;
-} & React.SVGAttributes<SVGForeignObjectElement>) => (
+}) => (
   <foreignObject {...props}>
     <div ref={ref}>{children}</div>
   </foreignObject>
 );
+
+const positionCounter = (stackDirection: StackDirection, sizes: Size[]) => {
+  let currentOffset = 0;
+
+  return (index: number) => {
+    const position =
+      stackDirection === 'horizontal'
+        ? { x: currentOffset, y: 0 }
+        : { x: 0, y: currentOffset };
+
+    const size = sizes[index];
+    if (size) {
+      currentOffset +=
+        stackDirection === 'horizontal' ? size.width : size.height;
+    }
+
+    return position;
+  };
+};
+
+export const StackLayout: FC<StackLayoutProps> = ({
+  stackDirection,
+  children,
+  ...props
+}) => {
+  const [sizes, setSizes] = useState<Size[]>([]);
+  const getPosition = positionCounter(stackDirection, sizes);
+
+  const handleSizeChange = useCallback((index: number, newSize: Size) => {
+    setSizes(prev => {
+      const next = [...prev];
+      next[index] = newSize;
+      return next;
+    });
+  }, []);
+
+  return (
+    <svg {...props}>
+      {Children.map(children, (child, index) => {
+        if (!React.isValidElement(child)) return null;
+
+        return (
+          <StackElement
+            key={index}
+            index={index}
+            onSizeChange={handleSizeChange}
+            position={getPosition(index)}
+          >
+            {child}
+          </StackElement>
+        );
+      })}
+    </svg>
+  );
+};

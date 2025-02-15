@@ -1,17 +1,14 @@
 import { useState } from 'react';
-import { useRefWithSize, HTML, RefObjectWithSize } from 'react-svg-guides';
+import { useRefWithSize, HTML, StackLayout } from 'react-svg-guides';
 
 export const Rects = () => {
   const [foWidth, setFoWidth] = useState(200);
 
-  const foRef = useRefWithSize<HTMLDivElement>();
-  const svgRef = useRefWithSize<SVGSVGElement>();
-  const gRef = useRefWithSize<SVGGElement>();
-  const rect1Ref = useRefWithSize<SVGRectElement>();
-  const rect2Ref = useRefWithSize<SVGRectElement>();
+  const htmlRef = useRefWithSize<HTMLDivElement>();
+  const rectsGRef = useRefWithSize<SVGSVGElement>();
 
-  const width = Math.max(rect1Ref.width + rect2Ref.width, foRef.width);
-  const height = foRef.height + gRef.height;
+  const width = Math.max(rectsGRef.width, htmlRef.width);
+  const height = htmlRef.height + rectsGRef.height;
 
   return (
     <>
@@ -28,41 +25,36 @@ export const Rects = () => {
         onChange={e => setFoWidth(parseInt(e.target.value))}
       />
       <br />
-      <svg
-        ref={svgRef}
+      <StackLayout
+        stackDirection="vertical"
         width={width}
         height={height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
-        <HTML ref={foRef} width={foWidth} height={foRef.height} fontSize={30}>
+        <HTML
+          ref={htmlRef}
+          width={foWidth}
+          height={htmlRef.height}
+          fontSize={30}
+        >
           <div style={{ border: '1px solid red' }}>
             The width is {width}
             <br />
             The height is {height}
           </div>
         </HTML>
-        <g ref={gRef} transform={`translate(0 ${foRef.height})`}>
-          <Rect ref={rect1Ref} left={0} top={0} />
-          <Rect ref={rect2Ref} left={rect1Ref.width} top={0} />
-        </g>
-      </svg>
+        <StackLayout stackDirection="horizontal" ref={rectsGRef}>
+          <Rect />
+          <Rect />
+          <Rect />
+        </StackLayout>
+      </StackLayout>
     </>
   );
 };
 
-const Rect = ({
-  left,
-  top,
-  ref,
-}: {
-  left: number;
-  top: number;
-  ref: RefObjectWithSize<SVGRectElement>;
-}) => (
+const Rect = () => (
   <rect
-    ref={ref}
-    x={left}
-    y={top}
     width={100}
     height={100}
     stroke="blue"
