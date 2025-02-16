@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { FC } from 'react';
 import { useRefWithSize } from '../hooks.ts';
 import { StackElementProps } from './types.ts';
@@ -12,7 +12,19 @@ export const StackElement: FC<StackElementProps> = ({
   const ref = useRefWithSize<SVGGElement>();
   const { x, y } = position;
 
+  const [offsetX, setOffsetX] = useState<number>(0);
+  const [offsetY, setOffsetY] = useState<number>(0);
+
   useLayoutEffect(() => {
+    if (ref.current) {
+      const ctm = ref.current.getScreenCTM();
+      if (ctm !== null) {
+        const { left, top } = ref.current.getBoundingClientRect();
+
+        setOffsetX(Math.round(ctm.e - left));
+        setOffsetY(Math.round(ctm.f - top));
+      }
+    }
     onSizeChange(index, {
       width: ref.width,
       height: ref.height,
@@ -20,8 +32,10 @@ export const StackElement: FC<StackElementProps> = ({
   }, [index, ref.width, ref.height, onSizeChange]);
 
   return (
-    <g ref={ref} transform={`translate(${x} ${y})`}>
-      {children}
+    <g transform={`translate(${x} ${y})`}>
+      <g ref={ref} transform={`translate(${offsetX} ${offsetY})`}>
+        {children}
+      </g>
     </g>
   );
 };

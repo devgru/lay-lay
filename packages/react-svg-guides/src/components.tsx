@@ -8,15 +8,11 @@ import React, {
 } from 'react';
 import { RequestRootRectAccessorEvent } from './internal/events.ts';
 import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
-import {
-  HtmlProps,
-  StackDirection,
-  StackLayoutProps,
-  SvgProps,
-} from './types.ts';
+import { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { useCacheRef } from './internal/hooks.ts';
 import { StackElement } from './internal/components.tsx';
 import { Size } from './internal/types.ts';
+import { positionCounter } from './internal/util.tsx';
 
 export const SVG: FC<SvgProps> = ({
   children,
@@ -68,33 +64,20 @@ export const HTML: FC<HtmlProps> = ({
   ...props
 }) => (
   <foreignObject {...props}>
-    <div ref={ref}>{children}</div>
+    <div
+      ref={ref}
+      style={{
+        overflow: 'hidden',
+      }}
+    >
+      {children}
+    </div>
   </foreignObject>
 );
-
-const positionCounter = (stackDirection: StackDirection, sizes: Size[]) => {
-  let currentOffset = 0;
-
-  return (index: number) => {
-    const position =
-      stackDirection === 'horizontal'
-        ? { x: currentOffset, y: 0 }
-        : { x: 0, y: currentOffset };
-
-    const size = sizes[index];
-    if (size) {
-      currentOffset +=
-        stackDirection === 'horizontal' ? size.width : size.height;
-    }
-
-    return position;
-  };
-};
 
 export const StackLayout: FC<StackLayoutProps> = ({
   stackDirection,
   children,
-  ...props
 }) => {
   const [sizes, setSizes] = useState<Size[]>([]);
   const getPosition = positionCounter(stackDirection, sizes);
@@ -108,7 +91,7 @@ export const StackLayout: FC<StackLayoutProps> = ({
   }, []);
 
   return (
-    <svg {...props}>
+    <>
       {Children.map(children, (child, index) => {
         if (!React.isValidElement(child)) return null;
 
@@ -123,6 +106,6 @@ export const StackLayout: FC<StackLayoutProps> = ({
           </StackElement>
         );
       })}
-    </svg>
+    </>
   );
 };

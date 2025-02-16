@@ -19,13 +19,12 @@ export interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
 }
 
 export interface SvgProps extends SVGAttributes<SVGSVGElement> {
-  ref: RefObject<SVGSVGElement | null>;
+  ref?: RefObject<SVGSVGElement | null>;
 }
 
 export type StackDirection = 'horizontal' | 'vertical';
 
-export interface StackLayoutProps extends SVGAttributes<SVGSVGElement> {
+export interface StackLayoutProps {
   children: ReactNode;
   stackDirection: StackDirection;
-  ref?: RefObject<SVGSVGElement | null>;
 }

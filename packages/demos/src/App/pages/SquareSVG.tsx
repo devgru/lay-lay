@@ -1,7 +1,7 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
 import { useRefWithSize } from 'react-svg-guides';
 
-export const SquareContainer = () => {
+export const SquareSVG = () => {
   const ref = useRefWithSize<SVGSVGElement>();
 
   useWindowSize();
