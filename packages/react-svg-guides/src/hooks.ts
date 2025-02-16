@@ -49,23 +49,18 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
   const [width, updateWidth] = useState<number>(initialValue);
   const [height, updateHeight] = useState<number>(initialValue);
   const [left, updateLeft] = useState<number>(initialValue);
-  const [horizontalCenter, updateHorizontalCenter] =
-    useState<number>(initialValue);
-  const [right, updateRight] = useState<number>(initialValue);
   const [top, updateTop] = useState<number>(initialValue);
-  const [verticalCenter, updateVerticalCenter] = useState<number>(initialValue);
-  const [bottom, updateBottom] = useState<number>(initialValue);
 
   const getRootRectRef = useRef<GetRootRect | null>(null);
   const internalRef: RefObjectWithBox<E> = ref as any as RefObjectWithBox<E>;
   internalRef.width = width;
   internalRef.height = height;
   internalRef.left = left;
-  internalRef.horizontalCenter = horizontalCenter;
-  internalRef.right = right;
+  internalRef.horizontalCenter = left + width / 2;
+  internalRef.right = left + width;
   internalRef.top = top;
-  internalRef.verticalCenter = verticalCenter;
-  internalRef.bottom = bottom;
+  internalRef.verticalCenter = top + height / 2;
+  internalRef.bottom = top + height;
 
   useLayoutEffect(() => {
     const element = internalRef.current;
@@ -90,11 +85,7 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
     updateWidth(width);
     updateHeight(height);
     updateLeft(x);
-    updateHorizontalCenter(x + width / 2);
-    updateRight(x + width);
     updateTop(y);
-    updateVerticalCenter(y + height / 2);
-    updateBottom(y + height);
   });
 
   return internalRef;
