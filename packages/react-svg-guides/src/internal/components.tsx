@@ -21,10 +21,13 @@ export const StackElement: FC<StackElementProps> = ({
       if (ctm !== null) {
         const { left, top } = ref.current.getBoundingClientRect();
 
-        setOffsetX(Math.round(ctm.e - left));
-        setOffsetY(Math.round(ctm.f - top));
+        setOffsetX(ctm.e - left);
+        setOffsetY(ctm.f - top);
       }
     }
+  });
+
+  useLayoutEffect(() => {
     onSizeChange(index, {
       width: ref.width,
       height: ref.height,
