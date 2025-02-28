@@ -1,6 +1,8 @@
 import type { ReactNode, RefObject, SVGAttributes } from 'react';
 
-export type RefObjectWithSize<E> = RefObject<E | null> & {
+export type NullableRef<E> = RefObject<E | null>;
+
+export type RefObjectWithSize<E> = NullableRef<E> & {
   width: number;
   height: number;
 };
@@ -15,11 +17,11 @@ export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
 };
 
 export interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
-  ref?: RefObject<HTMLDivElement | null>;
+  ref?: NullableRef<HTMLDivElement>;
 }
 
 export interface SvgProps extends SVGAttributes<SVGSVGElement> {
-  ref?: RefObject<SVGSVGElement | null>;
+  ref?: NullableRef<SVGSVGElement>;
 }
 
 export type StackDirection = 'horizontal' | 'vertical';

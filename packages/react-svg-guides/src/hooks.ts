@@ -1,16 +1,55 @@
-import { RefObject, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 
+import type { NullableRef, RefObjectWithBox, RefObjectWithSize } from './types';
 import {
-  RefObjectWithBox,
-  RefObjectWithSize,
-
-} from './types';
-import { requestRootRectAccessor } from './internal/events.ts';
-import { GetRootRect, SVGOrHTMLElement } from './internal/types.ts';
+  requestRootRectAccessor,
+  RequestRootRectAccessorEvent,
+} from './internal/events.ts';
+import type { GetRootRect, SVGOrHTMLElement } from './internal/types.ts';
+import { useCacheRef } from './internal/hooks.ts';
+import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
 
 type RefProps<E> = {
-  ref: RefObject<E | null>;
+  ref: NullableRef<E>;
   initialValue: number;
+};
+
+export const useRootRef = <E extends SVGOrHTMLElement>(
+  ref: NullableRef<E> = useRef(null),
+): NullableRef<E> => {
+  const rootRectCache = useCacheRef<DOMRect>();
+
+  useLayoutEffect(() => {
+    const rootSvg = ref.current!;
+
+    const handleGuidesStateRequest = (e: Event) => {
+      if (!(e instanceof RequestRootRectAccessorEvent)) {
+        return;
+      }
+
+      e.callback(() => {
+        if (!rootRectCache.current) {
+          rootRectCache.current = rootSvg.getBoundingClientRect();
+        }
+
+        return rootRectCache.current;
+      });
+
+      e.stopPropagation();
+    };
+
+    rootSvg.addEventListener(
+      REQUEST_ROOT_RECT_ACCESSOR_EVENT,
+      handleGuidesStateRequest,
+    );
+    return () =>
+      rootSvg.removeEventListener(
+        REQUEST_ROOT_RECT_ACCESSOR_EVENT,
+        handleGuidesStateRequest,
+      );
+  }, []);
+
+  return ref;
 };
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(

@@ -2,54 +2,21 @@ import type { FC } from 'react';
 import React, {
   Children,
   useCallback,
-  useLayoutEffect,
   useRef,
   useState,
 } from 'react';
-import { RequestRootRectAccessorEvent } from './internal/events.ts';
-import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
-import { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
-import { useCacheRef } from './internal/hooks.ts';
+import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
-import { Size } from './internal/types.ts';
+import type { Size } from './internal/types.ts';
 import { positionCounter } from './internal/util.tsx';
+import { useRootRef } from './hooks.ts';
 
 export const SVG: FC<SvgProps> = ({
   children,
   ref = useRef(null),
   ...props
 }) => {
-  const rootRectCache = useCacheRef<DOMRect>();
-
-  useLayoutEffect(() => {
-    const rootSvg = ref.current!;
-
-    const handleGuidesStateRequest = (e: Event) => {
-      if (!(e instanceof RequestRootRectAccessorEvent)) {
-        return;
-      }
-
-      e.callback(() => {
-        if (!rootRectCache.current) {
-          rootRectCache.current = rootSvg.getBoundingClientRect();
-        }
-
-        return rootRectCache.current;
-      });
-
-      e.stopPropagation();
-    };
-
-    rootSvg.addEventListener(
-      REQUEST_ROOT_RECT_ACCESSOR_EVENT,
-      handleGuidesStateRequest,
-    );
-    return () =>
-      rootSvg.removeEventListener(
-        REQUEST_ROOT_RECT_ACCESSOR_EVENT,
-        handleGuidesStateRequest,
-      );
-  }, []);
+  useRootRef(ref);
 
   return (
     <svg {...props} ref={ref}>
