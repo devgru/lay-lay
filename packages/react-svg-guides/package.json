@@ -1,6 +1,6 @@
 {
   "name": "react-svg-guides",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Guides-based layout for SVG elements in React",
   "keywords": [
     "react",
