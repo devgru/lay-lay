@@ -1,8 +1,4 @@
-import {
-  HTML,
-  StackLayout,
-  useRefWithSize,
-} from 'react-svg-guides';
+import { HTML, StackLayout, useRefWithSize } from 'react-svg-guides';
 
 export const FitMe = () => {
   const rootRef = useRefWithSize<SVGCircleElement>();
@@ -34,12 +30,20 @@ export const FitMe = () => {
                 transform="translate(100 -1000) rotate(45) translate(100)"
               />
               <circle r={50} fill="blue" />
-              <rect
+              <HTML
                 width={71}
                 height={71}
-                fill="yellow"
-                transform="scale(1.41)"
-              />
+                style={{
+                  backgroundColor: 'yellow',
+                  color: 'black',
+                  fontSize: '17pt',
+                  textAlign: 'center',
+                }}
+                transform='translate(100 -1000) rotate(45) translate(100)'
+              >
+                <div>some</div>
+                <div><code>html</code></div>
+              </HTML>
             </StackLayout>
           </g>
         </StackLayout>
