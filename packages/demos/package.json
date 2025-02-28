@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -13,10 +16,9 @@
     "@eslint/js": "^9.9.0",
     "@react-hook/window-size": "^3.1.1",
     "@types/d3-scale": "^4.0.8",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "d3-axis-for-react": "^1.1.1",
     "d3-scale": "^4.0.2",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
