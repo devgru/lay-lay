@@ -1,5 +1,5 @@
-import { StackDirection } from '../types.ts';
-import { Size } from './types.ts';
+import { type StackDirection } from '../types.ts';
+import { type Size } from './types.ts';
 
 export const positionCounter = (
   stackDirection: StackDirection,

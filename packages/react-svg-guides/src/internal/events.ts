@@ -1,4 +1,4 @@
-import { SetRootRectAccessor } from './types';
+import { type SetRootRectAccessor } from './types';
 import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './constants';
 
 export class RequestRootRectAccessorEvent extends Event {

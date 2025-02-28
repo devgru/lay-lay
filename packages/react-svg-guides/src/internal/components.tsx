@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 import type { FC } from 'react';
 import { useRefWithSize } from '../hooks.ts';
-import { StackElementProps } from './types.ts';
+import type { StackElementProps } from './types.ts';
 
 export const StackElement: FC<StackElementProps> = ({
   index,

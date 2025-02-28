@@ -1,4 +1,4 @@
-import { RefObject, useRef } from 'react';
+import { type RefObject, useRef } from 'react';
 
 export const useCacheRef = <E>(): RefObject<E | undefined> => {
   const cache = useRef<E>(undefined);
