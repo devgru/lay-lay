@@ -108,7 +108,7 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
     }
 
     if (getRootRectRef.current === null) {
-      requestRootRectAccessor(element, getRootRect => {
+      requestRootRectAccessor(element, (getRootRect) => {
         getRootRectRef.current = getRootRect;
       });
       if (getRootRectRef.current === null) {

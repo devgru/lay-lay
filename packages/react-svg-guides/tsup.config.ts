@@ -9,4 +9,4 @@ export default defineConfig({
   target: 'esnext',
   clean: true,
   dts: true,
-} as Options)
+} as Options);

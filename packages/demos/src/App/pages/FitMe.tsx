@@ -39,10 +39,12 @@ export const FitMe = () => {
                   fontSize: '17pt',
                   textAlign: 'center',
                 }}
-                transform='translate(100 -1000) rotate(45) translate(100)'
+                transform="translate(100 -1000) rotate(45) translate(100)"
               >
                 <div>some</div>
-                <div><code>html</code></div>
+                <div>
+                  <code>html</code>
+                </div>
               </HTML>
             </StackLayout>
           </g>

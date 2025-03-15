@@ -1,10 +1,5 @@
 import type { FC } from 'react';
-import React, {
-  Children,
-  useCallback,
-  useRef,
-  useState,
-} from 'react';
+import React, { Children, useCallback, useRef, useState } from 'react';
 import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
 import type { Size } from './internal/types.ts';
@@ -50,7 +45,7 @@ export const StackLayout: FC<StackLayoutProps> = ({
   const getPosition = positionCounter(stackDirection, sizes);
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
-    setSizes(prev => {
+    setSizes((prev) => {
       const next = [...prev];
       next[index] = newSize;
       return next;

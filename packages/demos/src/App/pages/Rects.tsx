@@ -13,8 +13,8 @@ export const Rects = () => {
   return (
     <>
       <p>
-        a <code>foreignObject</code> and three <code>rect</code>s, pushing to the
-        right
+        a <code>foreignObject</code> and three <code>rect</code>s, pushing to
+        the right
       </p>
       <input
         type="range"
@@ -22,7 +22,7 @@ export const Rects = () => {
         max="320"
         step="10"
         value={foWidth}
-        onChange={e => setFoWidth(parseInt(e.target.value))}
+        onChange={(e) => setFoWidth(parseInt(e.target.value))}
       />
       <br />
       <svg

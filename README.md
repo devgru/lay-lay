@@ -1,7 +1,7 @@
 # react-svg-guides
 
 > While HTML supports a variety of layout techniques, SVG is more limited in this regard.
-> 
+>
 > The library provides a set of React hooks and components to capture SVG elements' measurements and expose them via refs, enabling complex SVG-based layouts building.
 
 Explore `demos` package for a glimpse of what this library can help with.
@@ -105,5 +105,4 @@ interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
 interface SvgProps extends SVGAttributes<SVGSVGElement> {
   ref: RefObject<SVGSVGElement | null>;
 }
-
 ```
