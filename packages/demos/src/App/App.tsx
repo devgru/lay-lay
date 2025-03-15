@@ -7,6 +7,8 @@ import { Rects } from './pages/Rects.tsx';
 import { Index } from './pages/Index.tsx';
 import { Axes } from './pages/Axes.tsx';
 import { FitMe } from './pages/FitMe.tsx';
+import { LineByLine } from './pages/LineByLine.tsx';
+import { Html } from './pages/Html.tsx';
 
 const router = createHashRouter([
   {
@@ -30,6 +32,14 @@ const router = createHashRouter([
     element: <FitMe />,
   },
   {
+    path: '/lines',
+    element: <LineByLine />,
+  },
+  {
+    path: '/html',
+    element: <Html />,
+  },
+  {
     path: '/',
     element: <Index />,
   },
@@ -41,10 +51,11 @@ const App = () => (
       <code>react-svg-guides</code> example gallery
     </p>
     <nav>
-      <a href="#">What it's all about</a> • <a href="#rects">Pushing rects</a> •{' '}
+      <a href="#">What it's all about</a> •<a href="#rects">Pushing rects</a> •{' '}
       <a href="#fit-me">Fitting container</a> •{' '}
       <a href="#square-svg">Square container</a> •{' '}
-      <a href="#center">Center Line</a>
+      <a href="#center">Center line</a> • <a href="#lines">Line by line</a> •{' '}
+      <a href="#html">HTML elements</a>
     </nav>
     <RouterProvider router={router} />
   </div>
