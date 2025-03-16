@@ -16,15 +16,18 @@ export const StackElement: FC<StackElementProps> = ({
   const [offsetY, setOffsetY] = useState<number>(0);
 
   useLayoutEffect(() => {
-    if (ref.current) {
-      const ctm = ref.current.getScreenCTM();
-      if (ctm !== null) {
-        const { left, top } = ref.current.getBoundingClientRect();
-
-        setOffsetX(ctm.e - left);
-        setOffsetY(ctm.f - top);
-      }
+    if (ref.current === null) {
+      return;
     }
+
+    const ctm = ref.current.getScreenCTM();
+    if (ctm === null) {
+
+      return;
+    }
+    const { left, top } = ref.current.getBoundingClientRect();
+    setOffsetX(ctm.e - left);
+    setOffsetY(ctm.f - top);
   });
 
   useLayoutEffect(() => {

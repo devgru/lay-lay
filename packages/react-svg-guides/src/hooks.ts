@@ -9,8 +9,7 @@ import type { GetRootRect, SVGOrHTMLElement } from './internal/types.ts';
 import { useCacheRef } from './internal/hooks.ts';
 import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
 
-type RefProps<E> = {
-  ref: NullableRef<E>;
+type RefProps = {
   initialValue: number;
 };
 
@@ -53,14 +52,14 @@ export const useRootRef = <E extends SVGOrHTMLElement>(
 };
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps<E>>,
+  props?: Partial<RefProps>,
 ): RefObjectWithSize<E> => {
-  const ref = props?.ref ?? useRef(null);
+  const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;
 
   const [width, updateWidth] = useState<number>(initialValue);
   const [height, updateHeight] = useState<number>(initialValue);
-  const internalRef: RefObjectWithSize<E> = ref as any as RefObjectWithSize<E>;
+  const internalRef: RefObjectWithSize<E> = ref as RefObjectWithSize<E>;
   internalRef.width = width;
   internalRef.height = height;
 
@@ -80,9 +79,9 @@ export const useRefWithSize = <E extends SVGOrHTMLElement>(
 };
 
 export const useRefWithBox = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps<E>>,
+  props?: Partial<RefProps>,
 ): RefObjectWithBox<E> => {
-  const ref = props?.ref ?? useRef(null);
+  const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;
 
   const [width, updateWidth] = useState<number>(initialValue);
@@ -91,7 +90,7 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
   const [top, updateTop] = useState<number>(initialValue);
 
   const getRootRectRef = useRef<GetRootRect | null>(null);
-  const internalRef: RefObjectWithBox<E> = ref as any as RefObjectWithBox<E>;
+  const internalRef: RefObjectWithBox<E> = ref as RefObjectWithBox<E>;
   internalRef.width = width;
   internalRef.height = height;
   internalRef.left = left;
