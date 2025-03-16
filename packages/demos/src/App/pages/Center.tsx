@@ -3,7 +3,7 @@ import { HTML, SVG, useRefWithSize } from 'react-svg-guides';
 
 export const Center = () => {
   const svgRef = useRefWithSize<SVGSVGElement>();
-  const foRef = useRefWithSize<HTMLDivElement>();
+  const htmlRef = useRefWithSize<HTMLDivElement>();
 
   useWindowSize();
 
@@ -16,9 +16,9 @@ export const Center = () => {
       <SVG
         ref={svgRef}
         style={{ background: '#eee', width: '100%' }}
-        height={foRef.height}
+        height={htmlRef.height}
       >
-        <HTML width="100%" ref={foRef} height={foRef.height}>
+        <HTML width="100%" ref={htmlRef} height={htmlRef.height}>
           <p
             style={{
               margin: 0,
@@ -32,6 +32,9 @@ export const Center = () => {
           </p>
         </HTML>
       </SVG>
+      <p>
+        SVG size: {svgRef.width} × {svgRef.height}
+      </p>
     </>
   );
 };

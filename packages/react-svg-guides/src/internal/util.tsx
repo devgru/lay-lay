@@ -1,7 +1,7 @@
 import { type StackDirection } from '../types.ts';
 import { type Size } from './types.ts';
 
-export const positionCounter = (
+export const positionAccumulator = (
   stackDirection: StackDirection,
   sizes: Size[],
 ) => {

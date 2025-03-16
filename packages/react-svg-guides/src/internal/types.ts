@@ -18,7 +18,3 @@ export interface StackElementProps {
 }
 
 export type SVGOrHTMLElement = SVGElement | HTMLElement;
-
-export type GetRootRect = () => DOMRect | null;
-
-export type SetRootRectAccessor = (getRootRect: GetRootRect) => void;

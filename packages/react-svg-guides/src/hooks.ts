@@ -1,54 +1,11 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
-import type { NullableRef, RefObjectWithBox, RefObjectWithSize } from './types';
-import {
-  requestRootRectAccessor,
-  RequestRootRectAccessorEvent,
-} from './internal/events.ts';
-import type { GetRootRect, SVGOrHTMLElement } from './internal/types.ts';
-import { useCacheRef } from './internal/hooks.ts';
-import { REQUEST_ROOT_RECT_ACCESSOR_EVENT } from './internal/constants.ts';
+import type { RefObjectWithBox, RefObjectWithSize } from './types';
+import type { SVGOrHTMLElement } from './internal/types.ts';
+import { useOrigin } from './contexts.ts';
 
 type RefProps = {
   initialValue: number;
-};
-
-export const useRootRef = <E extends SVGOrHTMLElement>(
-  ref: NullableRef<E> = useRef(null),
-): NullableRef<E> => {
-  const rootRectCache = useCacheRef<DOMRect>();
-
-  useLayoutEffect(() => {
-    const rootSvg = ref.current!;
-
-    const handleGuidesStateRequest = (e: Event) => {
-      if (!(e instanceof RequestRootRectAccessorEvent)) {
-        return;
-      }
-
-      e.callback(() => {
-        if (!rootRectCache.current) {
-          rootRectCache.current = rootSvg.getBoundingClientRect();
-        }
-
-        return rootRectCache.current;
-      });
-
-      e.stopPropagation();
-    };
-
-    rootSvg.addEventListener(
-      REQUEST_ROOT_RECT_ACCESSOR_EVENT,
-      handleGuidesStateRequest,
-    );
-    return () =>
-      rootSvg.removeEventListener(
-        REQUEST_ROOT_RECT_ACCESSOR_EVENT,
-        handleGuidesStateRequest,
-      );
-  }, []);
-
-  return ref;
 };
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(
@@ -83,13 +40,13 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
 ): RefObjectWithBox<E> => {
   const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;
+  const origin = useOrigin();
 
   const [width, updateWidth] = useState<number>(initialValue);
   const [height, updateHeight] = useState<number>(initialValue);
   const [left, updateLeft] = useState<number>(initialValue);
   const [top, updateTop] = useState<number>(initialValue);
 
-  const getRootRectRef = useRef<GetRootRect | null>(null);
   const internalRef: RefObjectWithBox<E> = ref as RefObjectWithBox<E>;
   internalRef.width = width;
   internalRef.height = height;
@@ -106,19 +63,9 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
       return;
     }
 
-    if (getRootRectRef.current === null) {
-      requestRootRectAccessor(element, (getRootRect) => {
-        getRootRectRef.current = getRootRect;
-      });
-      if (getRootRectRef.current === null) {
-        getRootRectRef.current = () => null;
-      }
-    }
-
     const { left, top, width, height } = element.getBoundingClientRect();
-    const rootRect = getRootRectRef.current();
-    const x = left - (rootRect?.left ?? 0);
-    const y = top - (rootRect?.top ?? 0);
+    const x = left - origin.x;
+    const y = top - origin.y;
 
     updateWidth(width);
     updateHeight(height);

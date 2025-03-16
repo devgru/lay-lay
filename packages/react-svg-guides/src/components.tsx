@@ -1,21 +1,42 @@
 import type { FC } from 'react';
-import React, { Children, useCallback, useRef, useState } from 'react';
+import React, {
+  Children,
+  useCallback,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from 'react';
 import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
 import type { Size } from './internal/types.ts';
-import { positionCounter } from './internal/util.tsx';
-import { useRootRef } from './hooks.ts';
+import { positionAccumulator } from './internal/util.tsx';
+import { useCacheRef } from './internal/hooks.ts';
+import { OriginContext } from './contexts.ts';
 
 export const SVG: FC<SvgProps> = ({
   children,
   ref = useRef(null),
   ...props
 }) => {
-  useRootRef(ref);
+  const rectCache = useCacheRef<DOMRect>();
+  const [originX, setOriginX] = useState(0);
+  const [originY, setOriginY] = useState(0);
+
+  useLayoutEffect(() => {
+    if (ref.current === null || rectCache.current) {
+      return;
+    }
+    const rect = ref.current.getBoundingClientRect();
+    rectCache.current = rect;
+    setOriginX(rect.left);
+    setOriginY(rect.top);
+  });
 
   return (
     <svg {...props} ref={ref}>
-      {children}
+      <OriginContext.Provider value={{ x: originX, y: originY }}>
+        {children}
+      </OriginContext.Provider>
     </svg>
   );
 };
@@ -42,7 +63,7 @@ export const StackLayout: FC<StackLayoutProps> = ({
   children,
 }) => {
   const [sizes, setSizes] = useState<Size[]>([]);
-  const getPosition = positionCounter(stackDirection, sizes);
+  const getPosition = positionAccumulator(stackDirection, sizes);
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
     setSizes((prev) => {
