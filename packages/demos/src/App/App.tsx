@@ -54,8 +54,7 @@ const App = () => (
       <a href="#">What it's all about</a> •<a href="#rects">Pushing rects</a> •{' '}
       <a href="#fit-me">Fitting container</a> •{' '}
       <a href="#square-svg">Square container</a> •{' '}
-      <a href="#center">Center line</a> • <a href="#lines">Line by line</a> •{' '}
-      <a href="#html">HTML elements</a>
+      <a href="#lines">Line by line</a>
     </nav>
     <RouterProvider router={router} />
   </div>
