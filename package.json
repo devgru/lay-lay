@@ -5,6 +5,10 @@
   "scripts": {
     "lint": "eslint ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgru/lay-lay.git"
+  },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "eslint": "^9.9.0",
@@ -12,6 +16,7 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "prettier": "3",
+    "tsup": "^8.3.0",
     "typescript-eslint": "^8.0.1"
   }
 }

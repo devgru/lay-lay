@@ -13,7 +13,7 @@ export const useOrigin = (): Origin => {
   if (context === null) {
     throw new Error(
       'useOrigin must be used within an OriginContext.Provider. ' +
-        'Make sure you are using the SVG component from react-svg-guides.',
+        'Make sure you are using the SVG component from @lay-lay/core.',
     );
   }
 

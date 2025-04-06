@@ -1,11 +1,10 @@
 import { defineConfig, Options } from 'tsup';
 
 export default defineConfig({
-  entry: ['index.ts'],
+  entry: ['src/index.ts'],
   splitting: false,
   sourcemap: false,
-  format: ['cjs', 'esm'],
-  external: ['react'],
+  format: ['esm'],
   target: 'esnext',
   clean: true,
   dts: true,

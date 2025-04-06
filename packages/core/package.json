@@ -1,16 +1,17 @@
 {
-  "name": "react-svg-guides",
-  "version": "0.6.0",
-  "description": "Guides-based layout for SVG elements in React",
+  "name": "@lay-lay/core",
+  "version": "0.1.0",
+  "description": "Refs on steroids that track element's size and position",
   "keywords": [
     "react",
+    "refs",
     "svg",
     "guides",
     "foreignObject"
   ],
   "type": "module",
   "scripts": {
-    "prepack": "tsup ; cp ../../README.md ."
+    "prepack": "tsup"
   },
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
@@ -23,9 +24,6 @@
   "files": [
     "dist"
   ],
-  "devDependencies": {
-    "tsup": "^8.3.0"
-  },
   "peerDependencies": {
     "react": "19"
   }
