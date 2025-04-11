@@ -1,5 +1,5 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
-import { HTML, SVG, useRefWithSize } from 'react-svg-guides';
+import { HTML, SVG, useRefWithSize } from '@lay-lay/core';
 
 export const Center = () => {
   const svgRef = useRefWithSize<SVGSVGElement>();

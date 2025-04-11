@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
+  <defs>
+    <path id="a" d="M8 64h8v184H8zm16 0h8v184h-8zm16 0h8v184h-8zm16 0h8v184h-8zm72 160v8H64v-8zm0 16v8H64v-8zm0-32v8H64v-8zm0-16v8H64v-8z"/>
+  </defs>
+  <use fill="oklch(0.34 0.1159 155.04)" href="#a"/>
+  <use fill="oklch(0.62 0.1752 54.27)" href="#a" transform="rotate(180 128 128)"/>
+</svg>

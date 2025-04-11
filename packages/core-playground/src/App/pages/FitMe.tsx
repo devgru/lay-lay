@@ -1,4 +1,4 @@
-import { HTML, StackLayout, useRefWithSize } from 'react-svg-guides';
+import { HTML, StackLayout, useRefWithSize } from '@lay-lay/core';
 
 export const FitMe = () => {
   const rootRef = useRefWithSize<SVGCircleElement>();

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRefWithSize, HTML, StackLayout } from 'react-svg-guides';
+import { useRefWithSize, HTML, StackLayout } from '@lay-lay/core';
 
 export const Rects = () => {
   const [foWidth, setFoWidth] = useState(200);

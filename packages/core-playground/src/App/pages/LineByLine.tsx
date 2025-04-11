@@ -3,7 +3,7 @@ import {
   SVG,
   useRefWithBox,
   useRefWithSize,
-} from 'react-svg-guides';
+} from '@lay-lay/core';
 import { useWindowSize } from '@react-hook/window-size/throttled';
 
 function G({ ref }: { ref: RefObjectWithSize<SVGGElement> }) {
