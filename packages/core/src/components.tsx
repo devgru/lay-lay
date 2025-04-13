@@ -1,5 +1,5 @@
-import type { FC } from 'react';
-import React, {
+import { type FC, isValidElement } from 'react';
+import {
   Children,
   useCallback,
   useRef,
@@ -10,30 +10,34 @@ import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
 import type { Size } from './internal/types.ts';
 import { positionAccumulator } from './internal/util.tsx';
-import { useCacheRef } from './internal/hooks.ts';
 import { OriginContext } from './contexts.ts';
+import { useMergeRefs } from './internal/hooks.ts';
 
 export const SVG: FC<SvgProps> = ({
   children,
-  ref = useRef(null),
+  ref,
   ...props
 }) => {
-  const rectCache = useCacheRef<DOMRect>();
   const [originX, setOriginX] = useState(0);
   const [originY, setOriginY] = useState(0);
 
+  const innerRef = useRef<SVGSVGElement>(null);
+  const mergedRef = useMergeRefs([
+    ref,
+    innerRef,
+  ]);
+
   useLayoutEffect(() => {
-    if (ref.current === null || rectCache.current) {
+    if (innerRef.current === null) {
       return;
     }
-    const rect = ref.current.getBoundingClientRect();
-    rectCache.current = rect;
+    const rect = innerRef.current.getBoundingClientRect();
     setOriginX(rect.left);
     setOriginY(rect.top);
   });
 
   return (
-    <svg {...props} ref={ref}>
+    <svg {...props} ref={mergedRef}>
       <OriginContext.Provider value={{ x: originX, y: originY }}>
         {children}
       </OriginContext.Provider>
@@ -41,11 +45,7 @@ export const SVG: FC<SvgProps> = ({
   );
 };
 
-export const HTML: FC<HtmlProps> = ({
-  children,
-  ref = useRef(null),
-  ...props
-}) => (
+export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => (
   <foreignObject {...props}>
     <div
       ref={ref}
@@ -76,7 +76,7 @@ export const StackLayout: FC<StackLayoutProps> = ({
   return (
     <>
       {Children.map(children, (child, index) => {
-        if (!React.isValidElement(child)) return null;
+        if (!isValidElement(child)) return null;
 
         return (
           <StackElement
