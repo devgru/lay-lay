@@ -1,10 +1,8 @@
 # @lay-lay/core
 
-> While HTML supports a variety of layout techniques, SVG is more limited in this regard.
->
-> The library provides a set of React hooks and components to capture SVG elements' measurements and expose them via refs, enabling complex SVG-based layouts building.
+> The library provides a set of React hooks and components to capture elements' measurements and expose them via refs, enabling coordinating HTML and SVG elements in complex multi-layered layouts.
 
-Explore `demos` package for a glimpse of what this library can help with.
+Explore `@lay-lay/core-playground` package for a glimpse of the library's features.
 
 ## Usage
 
