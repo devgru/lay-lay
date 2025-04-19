@@ -33,6 +33,7 @@ export type StackDirection = 'horizontal' | 'vertical';
 export interface StackLayoutProps {
   children: ReactNode;
   stackDirection: StackDirection;
+  sizeState?: SizeState;
 }
 
 export type SizeState = Size & {

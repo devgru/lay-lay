@@ -60,6 +60,7 @@ export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => (
 
 export const StackLayout: FC<StackLayoutProps> = ({
   stackDirection,
+  sizeState,
   children,
 }) => {
   const [sizes, setSizes] = useState<Size[]>([]);
@@ -72,6 +73,39 @@ export const StackLayout: FC<StackLayoutProps> = ({
       return next;
     });
   }, []);
+
+  useLayoutEffect(() => {
+    const sumBy = (key: keyof Size) => {
+      let sum = 0;
+      for (const size of sizes) {
+        sum += size[key];
+      }
+      return sum;
+    };
+
+    const maxBy = (key: keyof Size) => {
+      let max = 0;
+      for (const size of sizes) {
+        if (size[key] > max) {
+          max = size[key];
+        }
+      }
+      return max;
+    };
+    if (sizeState) {
+      if (stackDirection === 'horizontal') {
+        sizeState.setSize({
+          width: sumBy('width'),
+          height: maxBy('height'),
+        });
+      } else {
+        sizeState.setSize({
+          width: maxBy('width'),
+          height: sumBy('height'),
+        });
+      }
+    }
+  });
 
   return (
     <>
