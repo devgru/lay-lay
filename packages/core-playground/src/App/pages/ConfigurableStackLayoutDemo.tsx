@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { useRefWithSize, HTML, StackLayout } from '@lay-lay/core';
+import { HTML, StackLayout, useRefWithSize, useSizeState } from '@lay-lay/core';
 
-export const Rects = () => {
+export const ConfigurableStackLayoutDemo = () => {
   const [foWidth, setFoWidth] = useState(200);
 
   const htmlRef = useRefWithSize<HTMLDivElement>();
-  const rectsGRef = useRefWithSize<SVGSVGElement>();
-
-  const width = Math.max(rectsGRef.width, htmlRef.width);
-  const height = htmlRef.height + rectsGRef.height;
+  const rootSizeState = useSizeState();
 
   return (
     <>
+      <h2>Configurable stack demo</h2>
       <p>
         a <code>foreignObject</code> and three <code>rect</code>s, pushing to
         the right
@@ -26,11 +24,11 @@ export const Rects = () => {
       />
       <br />
       <svg
-        width={width}
-        height={height}
+        width={rootSizeState.width}
+        height={rootSizeState.height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
-        <StackLayout stackDirection="vertical">
+        <StackLayout stackDirection="vertical" sizeState={rootSizeState}>
           <HTML
             ref={htmlRef}
             width={foWidth}
@@ -38,18 +36,16 @@ export const Rects = () => {
             fontSize={30}
           >
             <div style={{ border: '1px solid red' }}>
-              The width is {width}
+              The width is {rootSizeState.width}
               <br />
-              The height is {height}
+              The height is {rootSizeState.height}
             </div>
           </HTML>
-          <g ref={rectsGRef}>
-            <StackLayout stackDirection="horizontal">
-              <Rect />
-              <Rect />
-              <Rect />
-            </StackLayout>
-          </g>
+          <StackLayout stackDirection="horizontal">
+            <Rect />
+            <Rect />
+            <Rect />
+          </StackLayout>
         </StackLayout>
       </svg>
     </>

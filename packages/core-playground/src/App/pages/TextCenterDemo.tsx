@@ -1,7 +1,7 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
 import { HTML, SVG, useRefWithSize } from '@lay-lay/core';
 
-export const Center = () => {
+export const TextCenterDemo = () => {
   const svgRef = useRefWithSize<SVGSVGElement>();
   const htmlRef = useRefWithSize<HTMLDivElement>();
 
@@ -9,6 +9,7 @@ export const Center = () => {
 
   return (
     <>
+      <h2>Centered text demo</h2>
       <p>
         SVG size is defined by HTML contents, SVG container exposes its center
         via ref.
