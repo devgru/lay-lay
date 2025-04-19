@@ -45,18 +45,27 @@ export const SVG: FC<SvgProps> = ({
   );
 };
 
-export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => (
-  <foreignObject {...props}>
-    <div
-      ref={ref}
-      style={{
-        overflow: 'hidden',
-      }}
-    >
-      {children}
-    </div>
-  </foreignObject>
-);
+export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => {
+  const innerRef = useRef<HTMLDivElement>(null);
+  const mergedRef = useMergeRefs([ref, innerRef]);
+
+  const [height, setHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    if (innerRef.current === null) {
+      return;
+    }
+    setHeight(innerRef.current.offsetHeight);
+  });
+
+  return (
+    <foreignObject {...props} height={height}>
+      <div ref={mergedRef} style={{ overflow: 'hidden' }}>
+        {children}
+      </div>
+    </foreignObject>
+  );
+};
 
 export const StackLayout: FC<StackLayoutProps> = ({
   stackDirection,
