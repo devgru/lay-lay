@@ -1,11 +1,28 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
-import type { RefObjectWithBox, RefObjectWithSize } from './types';
-import type { SVGOrHTMLElement } from './internal/types.ts';
+import type { RefObjectWithBox, RefObjectWithSize, SizeState } from './types';
+import type { Size, SVGOrHTMLElement } from './internal/types.ts';
 import { useOrigin } from './contexts.ts';
 
 type RefProps = {
   initialValue: number;
+};
+
+export const useSizeState = (): SizeState => {
+  const [width, setWidth] = useState(0);
+  const [height, setHeight] = useState(0);
+  const setSize = useCallback(
+    (size: Size) => {
+      setWidth(size.width);
+      setHeight(size.height);
+    },
+    [setWidth, setHeight],
+  );
+  return {
+    width,
+    height,
+    setSize,
+  };
 };
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(

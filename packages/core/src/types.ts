@@ -4,6 +4,7 @@ import type {
   RefObject,
   SVGAttributes
 } from 'react';
+import type { Size } from './internal/types.ts';
 
 export type RefObjectWithSize<E> = RefObject<E | null> & {
   width: number;
@@ -34,3 +35,6 @@ export interface StackLayoutProps {
   stackDirection: StackDirection;
 }
 
+export type SizeState = Size & {
+  setSize: (size: Size) => void;
+};
