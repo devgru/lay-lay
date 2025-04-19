@@ -3,6 +3,8 @@ import type { FC } from 'react';
 import { useRefWithSize } from '../hooks.ts';
 import type { StackElementProps } from './types.ts';
 
+const DOM_EPSILON = 0.01;
+
 export const StackElement: FC<StackElementProps> = ({
   index,
   onSizeChange,
@@ -22,12 +24,19 @@ export const StackElement: FC<StackElementProps> = ({
 
     const ctm = ref.current.getScreenCTM();
     if (ctm === null) {
-
       return;
     }
     const { left, top } = ref.current.getBoundingClientRect();
-    setOffsetX(ctm.e - left);
-    setOffsetY(ctm.f - top);
+    const isOffsetXDeltaSmall = Math.abs(left - ctm.e - offsetX) < DOM_EPSILON;
+    const isOffsetYDeltaSmall = Math.abs(top - ctm.f - offsetY) < DOM_EPSILON;
+    if (!isOffsetXDeltaSmall || !isOffsetYDeltaSmall) {
+      setOffsetX(left - ctm.e);
+      setOffsetY(top - ctm.f);
+      onSizeChange(index, {
+        width: ref.width,
+        height: ref.height,
+      });
+    }
   });
 
   useLayoutEffect(() => {
