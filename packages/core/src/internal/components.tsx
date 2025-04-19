@@ -38,8 +38,8 @@ export const StackElement: FC<StackElementProps> = ({
   }, [index, ref.width, ref.height, onSizeChange]);
 
   return (
-    <g transform={`translate(${x} ${y})`}>
-      <g ref={ref} transform={`translate(${offsetX} ${offsetY})`}>
+    <g transform={`translate(${x} ${y}) translate(${-offsetX} ${-offsetY})`}>
+      <g ref={ref}>
         {children}
       </g>
     </g>
