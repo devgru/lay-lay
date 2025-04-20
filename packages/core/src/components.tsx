@@ -19,7 +19,7 @@ export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
   const [originY, setOriginY] = useState(0);
 
   const innerRef = useRef<SVGSVGElement>(null);
-  const mergedRef = useMergeRefs([ref, innerRef]);
+  const mergedRef = useMergeRefs(ref, innerRef);
 
   useLayoutEffect(() => {
     if (innerRef.current === null) {
@@ -41,7 +41,7 @@ export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
 
 export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => {
   const innerRef = useRef<HTMLDivElement>(null);
-  const mergedRef = useMergeRefs([ref, innerRef]);
+  const mergedRef = useMergeRefs(ref, innerRef);
 
   const [height, setHeight] = useState(0);
 

@@ -1,52 +1,86 @@
-import {
-  type Ref,
-  type RefCallback,
-  type RefObject,
-  useMemo,
-  useRef
-} from 'react';
-
-export const useCacheRef = <E>(): RefObject<E | undefined> => {
-  const cache = useRef<E>(undefined);
-  cache.current = undefined;
-  return cache;
-};
+import { type Ref, type RefCallback, useMemo } from 'react';
 
 type RefCleanup<T> = Exclude<ReturnType<RefCallback<T>>, void>;
+
+const setRefValueAndReturnCleanup = <T>(
+  ref: Ref<T>,
+  value: T | null,
+): RefCleanup<T> | undefined => {
+  if (ref == null) {
+    return;
+  }
+  if (typeof ref === 'function') {
+    const cleanup = ref(value);
+
+    if (typeof cleanup === 'function') {
+      return cleanup;
+    }
+    return () => {
+      ref(null);
+    };
+  }
+  ref.current = value;
+  return () => {
+    ref.current = null;
+  };
+};
+
+const setRefValue = <T>(
+  ref: Ref<T>,
+  value: T | null,
+): void => {
+  if (ref == null) {
+    return;
+  }
+  if (typeof ref === 'function') {
+    ref(value);
+    return;
+  }
+  ref.current = value;
+};
+
 export const useMergeRefs = <T>(
-  refs: Array<Ref<T> | undefined>,
-): RefCallback<T> =>
+  refA: Ref<T> | undefined,
+  refB: Ref<T> | undefined,
+): Ref<T> =>
   useMemo(
     () => (value) => {
-      const cleanups: RefCleanup<T>[] = [];
-
-      for (const ref of refs) {
-        if (ref == null) {
-          continue;
+      if (value === null) {
+        if (refA) {
+          setRefValue(refA, null);
         }
-        if (typeof ref === 'function') {
-          const cleanup = ref(value);
-          if (typeof cleanup === 'function') {
-            cleanups.push(cleanup);
-          } else {
-            cleanups.push(() => {
-              ref(null);
-            });
-          }
-          continue;
+        if (refB) {
+          setRefValue(refB, null);
         }
-
-        ref.current = value;
-        cleanups.push(() => {
-          ref.current = null;
-        });
+        return;
       }
 
-      return () => {
-        for (const cleanup of cleanups) {
-          cleanup();
+      const noA = refA == null;
+      const noB = refB == null;
+      if (noA) {
+        if (noB) {
+          return;
         }
-      };
+        return setRefValueAndReturnCleanup(refB, value);
+      }
+
+      if (noB) {
+        return setRefValueAndReturnCleanup(refA, value);
+      }
+
+      const cleanupA = setRefValueAndReturnCleanup(refA, value);
+      const cleanupB = setRefValueAndReturnCleanup(refB, value);
+
+      if (cleanupA) {
+        if (cleanupB) {
+          return () => {
+            cleanupA();
+            cleanupB();
+          };
+        }
+        return cleanupA;
+      }
+      return cleanupB;
     },
-    [refs],
+    [refA, refB],
   );
