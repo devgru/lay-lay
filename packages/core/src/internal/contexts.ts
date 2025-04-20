@@ -1,13 +1,13 @@
 import { createContext, useContext } from 'react';
 
-export type Origin = {
+type OriginGetter = () => {
   x: number;
   y: number;
 };
 
-export const OriginContext = createContext<Origin | null>(null);
+export const OriginContext = createContext<OriginGetter | null>(null);
 
-export const useOrigin = (): Origin => {
+export const useOrigin = (): OriginGetter => {
   const context = useContext(OriginContext);
 
   if (context === null) {

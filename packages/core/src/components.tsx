@@ -1,38 +1,35 @@
 import {
+  Children,
   type FC,
   isValidElement,
-  Children,
   useCallback,
+  useLayoutEffect,
   useRef,
   useState,
-  useLayoutEffect,
 } from 'react';
 import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
 import type { Size } from './internal/types.ts';
 import { positionAccumulator } from './internal/util.tsx';
-import { OriginContext } from './contexts.ts';
 import { useMergeRefs } from './internal/hooks.ts';
+import { OriginContext } from './internal/contexts.ts';
 
 export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
-  const [originX, setOriginX] = useState(0);
-  const [originY, setOriginY] = useState(0);
-
   const innerRef = useRef<SVGSVGElement>(null);
   const mergedRef = useMergeRefs(ref, innerRef);
 
-  useLayoutEffect(() => {
-    if (innerRef.current === null) {
-      return;
+  const getOrigin = useCallback(() => {
+    const element = innerRef.current;
+    if (!element) {
+      return { x: 0, y: 0 };
     }
-    const rect = innerRef.current.getBoundingClientRect();
-    setOriginX(rect.left);
-    setOriginY(rect.top);
-  });
+
+    return element.getBoundingClientRect();
+  }, []);
 
   return (
     <svg {...props} ref={mergedRef}>
-      <OriginContext.Provider value={{ x: originX, y: originY }}>
+      <OriginContext.Provider value={getOrigin}>
         {children}
       </OriginContext.Provider>
     </svg>

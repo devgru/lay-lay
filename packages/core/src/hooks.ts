@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 import type { RefObjectWithBox, RefObjectWithSize, SizeState } from './types';
 import type { Size, SVGOrHTMLElement } from './internal/types.ts';
-import { useOrigin } from './contexts.ts';
+import { useOrigin } from './internal/contexts.ts';
 
 type RefProps = {
   initialValue: number;
@@ -57,7 +57,7 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
 ): RefObjectWithBox<E> => {
   const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;
-  const origin = useOrigin();
+  const getOrigin = useOrigin();
 
   const [width, updateWidth] = useState<number>(initialValue);
   const [height, updateHeight] = useState<number>(initialValue);
@@ -81,13 +81,11 @@ export const useRefWithBox = <E extends SVGOrHTMLElement>(
     }
 
     const { left, top, width, height } = element.getBoundingClientRect();
-    const x = left - origin.x;
-    const y = top - origin.y;
-
+    const { x, y } = getOrigin();
     updateWidth(width);
     updateHeight(height);
-    updateLeft(x);
-    updateTop(y);
+    updateLeft(left - x);
+    updateTop(top - y);
   });
 
   return internalRef;
