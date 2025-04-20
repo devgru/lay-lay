@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@lay-lay/core": "workspace:*",
     "@react-hook/window-size": "^3.1.1",
     "@types/d3-scale": "^4.0.8",
     "@types/react": "^19.0.0",
@@ -20,8 +21,7 @@
     "d3-scale": "^4.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@lay-lay/core": "workspace:*",
-    "typescript": "5.6",
-    "vite": "^5.4.1"
+    "typescript": "5.8",
+    "vite": "^6.3.2"
   }
 }

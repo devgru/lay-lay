@@ -16,7 +16,7 @@
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
     "prettier": "3",
-    "tsup": "^8.3.0",
+    "tsup": "^8.4.0",
     "typescript-eslint": "^8.0.1"
   }
 }
