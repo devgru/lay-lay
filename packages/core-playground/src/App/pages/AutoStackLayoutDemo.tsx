@@ -1,12 +1,12 @@
 import { HTML, StackLayout, useSizeState } from '@lay-lay/core';
 
-export const MultipleStackLayoutDemo = () => {
+export const AutoStackLayoutDemo = () => {
   const rootSizeState = useSizeState();
   const shapesSizeState = useSizeState();
 
   return (
     <>
-      <h2>Auto stack demo</h2>
+      <h2>StackLayout demo — both directions</h2>
       <p>
         Verifies that both vertical and horizontal stacking is working as
         expected.

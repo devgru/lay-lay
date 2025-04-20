@@ -8,7 +8,7 @@ export const LineByLineDemo = () => {
 
   return (
     <div>
-      <h2>Line by line demo</h2>
+      <h2>StackLayout demo — basic</h2>
       <p>
         This example verifies that <code>StackLayout</code> work as expected,
         positioning elements one after the other

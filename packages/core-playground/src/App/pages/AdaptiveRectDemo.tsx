@@ -9,11 +9,12 @@ export const AdaptiveRectDemo = () => {
   return (
     <>
       <h2>Resizeable rect demo</h2>
-      <p>rect height is 10% of its width</p>
+      <p>rect height is 10% of page width</p>
       <svg
         height={ref.width * 0.1}
         style={{ background: '#585', width: '100%' }}
         ref={ref}
-      /></>
+      />
+    </>
   );
 };

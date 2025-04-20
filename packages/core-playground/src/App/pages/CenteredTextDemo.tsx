@@ -1,7 +1,7 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
 import { HTML, SVG, useRefWithSize } from '@lay-lay/core';
 
-export const TextCenterDemo = () => {
+export const CenteredTextDemo = () => {
   const svgRef = useRefWithSize<SVGSVGElement>();
   const htmlRef = useRefWithSize<HTMLDivElement>();
 
@@ -20,12 +20,7 @@ export const TextCenterDemo = () => {
         height={htmlRef.height}
       >
         <HTML width="100%" ref={htmlRef} height={htmlRef.height}>
-          <p
-            style={{
-              margin: 0,
-              color: 'black',
-            }}
-          >
+          <p style={{ margin: 0, color: 'black' }}>
             Hello!
             <br />
             This is a multiline text that is centered in the SVG container

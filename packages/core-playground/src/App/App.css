@@ -1,7 +1,11 @@
 body {
-  overflow-y: scroll;
+    overflow-y: scroll;
 }
 
 #root {
-  text-align: center;
+    text-align: center;
+}
+
+h2 {
+    margin-top: 4em;
 }
