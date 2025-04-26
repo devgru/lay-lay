@@ -7,7 +7,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 1414",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
