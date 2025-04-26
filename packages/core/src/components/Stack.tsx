@@ -6,13 +6,10 @@ import {
   useLayoutEffect,
   useState,
 } from 'react';
-import type { Size, StackDirection, StackLayoutProps } from '../types.ts';
+import type { Size, StackDirection, StackProps } from '../types.ts';
 import { StackElement } from './StackElement.tsx';
 
-const positionAccumulator = (
-  stackDirection: StackDirection,
-  sizes: Size[],
-) => {
+const positionAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
   let currentOffset = 0;
 
   return (index: number) => {
@@ -31,7 +28,7 @@ const positionAccumulator = (
   };
 };
 
-export const Stack: FC<StackLayoutProps> = ({
+export const Stack: FC<StackProps> = ({
   stackDirection,
   sizeState,
   children,

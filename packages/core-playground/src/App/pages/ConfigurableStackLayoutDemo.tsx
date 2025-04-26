@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { HtmlWrapper, Stack, useRefWithSize, useSizeState } from '@lay-lay/core';
+import {
+  HorizontalStack,
+  HtmlWrapper,
+  useRefWithSize,
+  useSizeState,
+  VerticalStack
+} from '@lay-lay/core';
 
 export const ConfigurableStackLayoutDemo = () => {
   const [foWidth, setFoWidth] = useState(200);
@@ -28,7 +34,7 @@ export const ConfigurableStackLayoutDemo = () => {
         height={rootSizeState.height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
-        <Stack stackDirection="vertical" sizeState={rootSizeState}>
+        <VerticalStack sizeState={rootSizeState}>
           <HtmlWrapper
             ref={htmlRef}
             width={foWidth}
@@ -41,12 +47,12 @@ export const ConfigurableStackLayoutDemo = () => {
               The height is {rootSizeState.height}
             </div>
           </HtmlWrapper>
-          <Stack stackDirection="horizontal">
+          <HorizontalStack>
             <Rect />
             <Rect />
             <Rect />
-          </Stack>
-        </Stack>
+          </HorizontalStack>
+        </VerticalStack>
       </svg>
     </>
   );

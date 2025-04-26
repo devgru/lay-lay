@@ -1,4 +1,9 @@
-import { HtmlWrapper, Stack, useSizeState } from '@lay-lay/core';
+import {
+  HorizontalStack,
+  HtmlWrapper,
+  useSizeState,
+  VerticalStack,
+} from '@lay-lay/core';
 
 export const AutoStackLayoutDemo = () => {
   const rootSizeState = useSizeState();
@@ -12,7 +17,7 @@ export const AutoStackLayoutDemo = () => {
         expected.
       </p>
       <svg width={rootSizeState.width} height={rootSizeState.height}>
-        <Stack stackDirection="vertical" sizeState={rootSizeState}>
+        <VerticalStack sizeState={rootSizeState}>
           <HtmlWrapper
             width={shapesSizeState.width}
             style={{ textAlign: 'center', fontSize: '16pt' }}
@@ -23,7 +28,7 @@ export const AutoStackLayoutDemo = () => {
               based on their size.
             </p>
           </HtmlWrapper>
-          <Stack stackDirection="horizontal" sizeState={shapesSizeState}>
+          <HorizontalStack sizeState={shapesSizeState}>
             <circle r={50} fill="red" />
             <rect
               width={71}
@@ -51,8 +56,8 @@ export const AutoStackLayoutDemo = () => {
                 </div>
               </div>
             </HtmlWrapper>
-          </Stack>
-        </Stack>
+          </HorizontalStack>
+        </VerticalStack>
       </svg>
     </>
   );

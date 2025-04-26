@@ -28,7 +28,7 @@ export interface SvgProps extends SVGAttributes<SVGSVGElement> {
 
 export type StackDirection = 'horizontal' | 'vertical';
 
-export interface StackLayoutProps {
+export interface StackProps {
   children: ReactNode;
   stackDirection: StackDirection;
   sizeState?: SizeState;
