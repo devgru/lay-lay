@@ -1,9 +1,7 @@
 import { createContext, useContext } from 'react';
+import type { Position } from './types.ts';
 
-type OriginGetter = () => {
-  x: number;
-  y: number;
-};
+type OriginGetter = () => Position;
 
 export const OriginContext = createContext<OriginGetter | null>(null);
 

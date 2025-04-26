@@ -9,23 +9,23 @@ import {
 } from 'react';
 import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
 import { StackElement } from './internal/components.tsx';
-import type { Size } from './internal/types.ts';
+import type { Position, Size } from './internal/types.ts';
 import { positionAccumulator } from './internal/util.tsx';
-import { useMergeRefs } from './internal/hooks.ts';
+import { useCachedCallback, useMergeRefs } from './internal/hooks.ts';
 import { OriginContext } from './internal/contexts.ts';
 
 export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
   const innerRef = useRef<SVGSVGElement>(null);
   const mergedRef = useMergeRefs(ref, innerRef);
 
-  const getOrigin = useCallback(() => {
+  const cb = useCallback((): Position => {
     const element = innerRef.current;
     if (!element) {
       return { x: 0, y: 0 };
     }
-
-    return element.getBoundingClientRect();
+    return element.getBoundingClientRect()
   }, []);
+  const getOrigin = useCachedCallback(cb);
 
   return (
     <svg {...props} ref={mergedRef}>
