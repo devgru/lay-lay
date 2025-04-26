@@ -4,59 +4,33 @@ import {
   isValidElement,
   useCallback,
   useLayoutEffect,
-  useRef,
   useState,
 } from 'react';
-import type { HtmlProps, StackLayoutProps, SvgProps } from './types.ts';
-import { StackElement } from './internal/components.tsx';
-import type { Position, Size } from './internal/types.ts';
-import { positionAccumulator } from './internal/util.tsx';
-import { useCachedCallback, useMergeRefs } from './internal/hooks.ts';
-import { OriginContext } from './internal/contexts.ts';
+import type { Size, StackDirection, StackLayoutProps } from '../types.ts';
+import { StackElement } from './StackElement.tsx';
 
-export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
-  const innerRef = useRef<SVGSVGElement>(null);
-  const mergedRef = useMergeRefs(ref, innerRef);
+const positionAccumulator = (
+  stackDirection: StackDirection,
+  sizes: Size[],
+) => {
+  let currentOffset = 0;
 
-  const cb = useCallback((): Position => {
-    const element = innerRef.current;
-    if (!element) {
-      return { x: 0, y: 0 };
+  return (index: number) => {
+    const position =
+      stackDirection === 'horizontal'
+        ? { x: currentOffset, y: 0 }
+        : { x: 0, y: currentOffset };
+
+    const size = sizes[index];
+    if (size) {
+      currentOffset +=
+        stackDirection === 'horizontal' ? size.width : size.height;
     }
-    return element.getBoundingClientRect()
-  }, []);
-  const getOrigin = useCachedCallback(cb);
 
-  return (
-    <svg {...props} ref={mergedRef}>
-      <OriginContext.Provider value={getOrigin}>
-        {children}
-      </OriginContext.Provider>
-    </svg>
-  );
+    return position;
+  };
 };
 
-export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => {
-  const innerRef = useRef<HTMLDivElement>(null);
-  const mergedRef = useMergeRefs(ref, innerRef);
-
-  const [height, setHeight] = useState(0);
-
-  useLayoutEffect(() => {
-    if (innerRef.current === null) {
-      return;
-    }
-    setHeight(innerRef.current.offsetHeight);
-  });
-
-  return (
-    <foreignObject {...props} height={height}>
-      <div ref={mergedRef} style={{ overflow: 'hidden' }}>
-        {children}
-      </div>
-    </foreignObject>
-  );
-};
 
 export const StackLayout: FC<StackLayoutProps> = ({
   stackDirection,

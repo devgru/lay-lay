@@ -1,9 +1,16 @@
-import { useLayoutEffect, useState } from 'react';
+import { type ReactNode, useLayoutEffect, useState } from 'react';
 import type { FC } from 'react';
-import { useRefWithSize } from '../hooks.ts';
-import type { StackElementProps } from './types.ts';
+import { useRefWithSize } from '../hooks/useRefWithSize.ts';
+import type { Position, Size } from '../types.ts';
 
 const DOM_EPSILON = 0.01;
+
+export interface StackElementProps {
+  index: number;
+  onSizeChange: (index: number, size: Size) => void;
+  children: ReactNode;
+  position: Position;
+}
 
 export const StackElement: FC<StackElementProps> = ({
   index,

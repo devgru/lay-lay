@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+
 import type { Position } from './types.ts';
 
 type OriginGetter = () => Position;

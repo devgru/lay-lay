@@ -1,10 +1,8 @@
-import type {
-  ReactNode,
-  Ref,
-  RefObject,
-  SVGAttributes
-} from 'react';
-import type { Size } from './internal/types.ts';
+import type { ReactNode, Ref, RefObject, SVGAttributes } from 'react';
+
+export type RefProps = {
+  initialValue: number;
+};
 
 export type RefObjectWithSize<E> = RefObject<E | null> & {
   width: number;
@@ -36,6 +34,17 @@ export interface StackLayoutProps {
   sizeState?: SizeState;
 }
 
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export interface Position {
+  x: number;
+  y: number;
+}
+
 export type SizeState = Size & {
   setSize: (size: Size) => void;
 };
+export type SVGOrHTMLElement = SVGElement | HTMLElement;
