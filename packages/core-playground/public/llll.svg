@@ -2,8 +2,8 @@
   <defs>
     <path id="a" d="M4 68h8v184H4zm16 0h8v184h-8zm16 0h8v184h-8zm16 0h8v184h-8zm72 160v8H68v-8zm0 16v8H68v-8zm0-32v8H68v-8zm0-16v8H68v-8z"/>
   </defs>
-  <use fill="oklch(0.34 0.1159 155.04)" href="#a"/>
-  <use fill="oklch(0.49 0.1406 237.71)" href="#a" transform="translate(128)"/>
-  <use fill="oklch(0.62 0.1752 54.27)" href="#a" transform="rotate(180 128 128)"/>
-  <use fill="oklch(0.52 0.2368 3.71)" href="#a" transform="rotate(180 128 128) translate(128)"/>
+  <use fill="#00471b" href="#a"/>
+  <use fill="#0068a2" href="#a" transform="translate(128)"/>
+  <use fill="#d36100" href="#a" transform="rotate(180 128 128)"/>
+  <use fill="#c6005a" href="#a" transform="rotate(180 128 128) translate(128)"/>
 </svg>
