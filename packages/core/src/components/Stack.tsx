@@ -31,8 +31,7 @@ const positionAccumulator = (
   };
 };
 
-
-export const StackLayout: FC<StackLayoutProps> = ({
+export const Stack: FC<StackLayoutProps> = ({
   stackDirection,
   sizeState,
   children,

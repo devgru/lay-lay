@@ -4,7 +4,7 @@ import { useMergeRefs } from '../hooks/useMergeRefs.ts';
 import { OriginContext } from '../contexts.ts';
 import { useCachedCallback } from '../hooks/useCachedCallback.ts';
 
-export const SVG: FC<SvgProps> = ({ children, ref, ...props }) => {
+export const SvgOrigin: FC<SvgProps> = ({ children, ref, ...props }) => {
   const innerRef = useRef<SVGSVGElement>(null);
   const mergedRef = useMergeRefs(ref, innerRef);
 

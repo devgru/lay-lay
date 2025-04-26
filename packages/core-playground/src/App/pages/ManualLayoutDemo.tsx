@@ -1,6 +1,6 @@
 import {
   type RefObjectWithSize,
-  SVG,
+  SvgOrigin,
   useRefWithBox,
   useRefWithSize,
 } from '@lay-lay/core';
@@ -34,13 +34,13 @@ export const ManualLayoutDemo = () => {
         after the other. If yellow background is visible under the blue rect,
         hooks are returning incorrect values.
       </p>
-      <SVG
+      <SvgOrigin
         width={gRef.width}
         height={gRef.height}
         style={{ backgroundColor: 'yellow' }}
       >
         <G ref={gRef} />
-      </SVG>
+      </SvgOrigin>
     </div>
   );
 };

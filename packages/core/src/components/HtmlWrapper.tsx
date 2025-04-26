@@ -2,7 +2,7 @@ import { type FC, useLayoutEffect, useRef, useState } from 'react';
 import type { HtmlProps } from '../types.ts';
 import { useMergeRefs } from '../hooks/useMergeRefs.ts';
 
-export const HTML: FC<HtmlProps> = ({ children, ref, ...props }) => {
+export const HtmlWrapper: FC<HtmlProps> = ({ children, ref, ...props }) => {
   const innerRef = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, innerRef);
 

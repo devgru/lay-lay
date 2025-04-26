@@ -1,5 +1,5 @@
 import { useWindowSize } from '@react-hook/window-size/throttled';
-import { HTML, SVG, useRefWithSize } from '@lay-lay/core';
+import { HtmlWrapper, SvgOrigin, useRefWithSize } from '@lay-lay/core';
 
 export const CenteredTextDemo = () => {
   const svgRef = useRefWithSize<SVGSVGElement>();
@@ -11,25 +11,25 @@ export const CenteredTextDemo = () => {
     <>
       <h2>Centered text demo</h2>
       <p>
-        SVG size is defined by HTML contents, SVG container exposes its center
+        SvgOrigin size is defined by HtmlWrapper contents, SvgOrigin container exposes its center
         via ref.
       </p>
-      <SVG
+      <SvgOrigin
         ref={svgRef}
         style={{ background: '#eee', width: '100%' }}
         height={htmlRef.height}
       >
-        <HTML width="100%" ref={htmlRef} height={htmlRef.height}>
+        <HtmlWrapper width="100%" ref={htmlRef} height={htmlRef.height}>
           <p style={{ margin: 0, color: 'black' }}>
             Hello!
             <br />
-            This is a multiline text that is centered in the SVG container
+            This is a multiline text that is centered in the SvgOrigin container
             within a foreignObject.
           </p>
-        </HTML>
-      </SVG>
+        </HtmlWrapper>
+      </SvgOrigin>
       <p>
-        SVG size: {svgRef.width} × {svgRef.height}
+        SvgOrigin size: {svgRef.width} × {svgRef.height}
       </p>
     </>
   );
