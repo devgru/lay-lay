@@ -1,10 +1,9 @@
-import { type FC, useLayoutEffect, useRef, useState } from 'react';
+import { type FC, useLayoutEffect, useState } from 'react';
 import type { HtmlProps } from '../types.ts';
-import { useMergeRefs } from '../hooks/useMergeRefs.ts';
+import { useWrapRef } from '../hooks/useWrapRef.ts';
 
 export const HtmlWrapper: FC<HtmlProps> = ({ children, ref, ...props }) => {
-  const innerRef = useRef<HTMLDivElement>(null);
-  const mergedRef = useMergeRefs(ref, innerRef);
+  const { innerRef, mergedRef } = useWrapRef(ref);
 
   const [height, setHeight] = useState(0);
 

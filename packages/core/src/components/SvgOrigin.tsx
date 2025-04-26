@@ -1,25 +1,24 @@
-import { type FC, useCallback, useRef } from 'react';
+import { type FC, useCallback } from 'react';
 import type { Position, SvgProps } from '../types.ts';
-import { useMergeRefs } from '../hooks/useMergeRefs.ts';
+import { useWrapRef } from '../hooks/useWrapRef.ts';
 import { OriginContext } from '../contexts.ts';
 import { useCachedCallback } from '../hooks/useCachedCallback.ts';
 
 export const SvgOrigin: FC<SvgProps> = ({ children, ref, ...props }) => {
-  const innerRef = useRef<SVGSVGElement>(null);
-  const mergedRef = useMergeRefs(ref, innerRef);
+  const { innerRef, mergedRef } = useWrapRef(ref);
 
-  const cb = useCallback((): Position => {
+  const getOrigin = useCallback((): Position => {
     const element = innerRef.current;
     if (!element) {
       return { x: 0, y: 0 };
     }
     return element.getBoundingClientRect();
   }, []);
-  const getOrigin = useCachedCallback(cb);
+  const getOriginCached = useCachedCallback(getOrigin);
 
   return (
     <svg {...props} ref={mergedRef}>
-      <OriginContext.Provider value={getOrigin}>
+      <OriginContext.Provider value={getOriginCached}>
         {children}
       </OriginContext.Provider>
     </svg>

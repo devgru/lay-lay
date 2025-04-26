@@ -4,7 +4,9 @@ export type RefProps = {
   initialValue: number;
 };
 
-export type RefObjectWithSize<E> = RefObject<E | null> & {
+export type NullableRefObject<E> = RefObject<E | null>;
+
+export type RefObjectWithSize<E> = NullableRefObject<E> & {
   width: number;
   height: number;
 };
