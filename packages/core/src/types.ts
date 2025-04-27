@@ -1,4 +1,10 @@
-import type { ReactNode, Ref, RefObject, SVGAttributes } from 'react';
+import type {
+  HTMLAttributes,
+  ReactNode,
+  Ref,
+  RefObject,
+  SVGAttributes,
+} from 'react';
 
 export type RefProps = {
   initialValue: number;
@@ -20,11 +26,16 @@ export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
   bottom: number;
 };
 
-export interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
+export interface HtmlWrapperProps
+  extends SVGAttributes<SVGForeignObjectElement> {
   ref?: Ref<HTMLDivElement>;
 }
 
-export interface SvgProps extends SVGAttributes<SVGSVGElement> {
+export interface HtmlOriginProps extends HTMLAttributes<HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>;
+}
+
+export interface SvgOriginProps extends SVGAttributes<SVGSVGElement> {
   ref?: Ref<SVGSVGElement>;
 }
 

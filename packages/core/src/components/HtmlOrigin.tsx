@@ -1,16 +1,20 @@
 import { type FC } from 'react';
-import type { SvgOriginProps } from '../types.ts';
+import type { HtmlOriginProps } from '../types.ts';
 import { OriginContext } from '../contexts.ts';
 import { useOriginRef } from '../hooks/useOriginRef.tsx';
 
-export const SvgOrigin: FC<SvgOriginProps> = ({ children, ref, ...props }) => {
+export const HtmlOrigin: FC<HtmlOriginProps> = ({
+  children,
+  ref,
+  ...props
+}) => {
   const { originRef, getOrigin } = useOriginRef(ref);
 
   return (
-    <svg {...props} ref={originRef}>
+    <div {...props} ref={originRef}>
       <OriginContext.Provider value={getOrigin}>
         {children}
       </OriginContext.Provider>
-    </svg>
+    </div>
   );
 };
