@@ -2,8 +2,7 @@ import type { FC } from 'react';
 import { type ReactNode, useLayoutEffect, useState } from 'react';
 import { useRefWithSize } from '../hooks/useRefWithSize.ts';
 import type { Origin, Size } from '../types.ts';
-
-const DOM_EPSILON = 0.01;
+import { DOM_EPSILON } from '../constants.ts';
 
 export interface StackElementProps {
   index: number;
@@ -39,10 +38,6 @@ export const StackElement: FC<StackElementProps> = ({
     if (!isOffsetXDeltaSmall || !isOffsetYDeltaSmall) {
       setOffsetX(left - ctm.e);
       setOffsetY(top - ctm.f);
-      onSizeChange(index, {
-        width: ref.width,
-        height: ref.height,
-      });
     }
   });
 

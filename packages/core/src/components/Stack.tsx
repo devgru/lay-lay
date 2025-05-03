@@ -8,6 +8,7 @@ import {
 } from 'react';
 import type { Size, StackDirection, StackProps } from '../types.ts';
 import { StackElement } from './StackElement.tsx';
+import { DOM_EPSILON } from '../constants.ts';
 
 const originAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
   let currentOffset = 0;
@@ -38,6 +39,16 @@ export const Stack: FC<StackProps> = ({
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
     setSizes((prevSizes) => {
+      const prev = prevSizes[index];
+      const isXDeltaSmall =
+        prev && Math.abs(newSize.width - prev.width) < DOM_EPSILON;
+      const isYDeltaSmall =
+        prev && Math.abs(newSize.height - prev.height) < DOM_EPSILON;
+
+      if (isXDeltaSmall && isYDeltaSmall) {
+        return prevSizes;
+      }
+
       const newSizes = [...prevSizes];
       newSizes[index] = newSize;
       return newSizes;
