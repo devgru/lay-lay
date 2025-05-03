@@ -8,12 +8,12 @@ export const HtmlOrigin: FC<HtmlOriginProps> = ({
   ref,
   ...props
 }) => {
-  const { originRef, getOrigin } = useOriginRef(ref);
+  const { originRef, getOrigin, refReady } = useOriginRef(ref);
 
   return (
     <div {...props} ref={originRef}>
       <OriginContext.Provider value={getOrigin}>
-        {children}
+        {refReady && children}
       </OriginContext.Provider>
     </div>
   );

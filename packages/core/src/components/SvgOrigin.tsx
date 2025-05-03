@@ -4,12 +4,12 @@ import { OriginContext } from '../contexts.ts';
 import { useOriginRef } from '../hooks/useOriginRef.tsx';
 
 export const SvgOrigin: FC<SvgOriginProps> = ({ children, ref, ...props }) => {
-  const { originRef, getOrigin } = useOriginRef(ref);
+  const { originRef, getOrigin, refReady } = useOriginRef(ref);
 
   return (
     <svg {...props} ref={originRef}>
       <OriginContext.Provider value={getOrigin}>
-        {children}
+        {refReady && children}
       </OriginContext.Provider>
     </svg>
   );

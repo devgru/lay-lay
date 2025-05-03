@@ -1,5 +1,5 @@
 import { useWrapRef } from './useWrapRef.ts';
-import { type Ref, useCallback } from 'react';
+import { type Ref, useCallback, useLayoutEffect, useState } from 'react';
 import type { Position, SVGOrHTMLElement } from '../types.ts';
 import { useCachedCallback } from './useCachedCallback.ts';
 
@@ -9,11 +9,20 @@ export const useOriginRef = <T extends SVGOrHTMLElement>(ref?: Ref<T>) => {
   const getOrigin = useCallback((): Position => {
     const element = innerRef.current;
     if (!element) {
-      return { x: 0, y: 0 };
+      throw new Error('getOrigin called before element is available in ref');
     }
     return element.getBoundingClientRect();
   }, []);
   const getOriginCached = useCachedCallback(getOrigin);
 
-  return { originRef: mergedRef, getOrigin: getOriginCached };
+  const [refReady, setRefReady] = useState(false);
+  useLayoutEffect(() => {
+    setRefReady(true);
+  }, []);
+
+  return {
+    originRef: mergedRef,
+    getOrigin: getOriginCached,
+    refReady,
+  };
 };
