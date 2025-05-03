@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { type ReactNode, useLayoutEffect, useState } from 'react';
 import { useRefWithSize } from '../hooks/useRefWithSize.ts';
-import type { Position, Size } from '../types.ts';
+import type { Origin, Size } from '../types.ts';
 
 const DOM_EPSILON = 0.01;
 
@@ -9,17 +9,17 @@ export interface StackElementProps {
   index: number;
   onSizeChange: (index: number, size: Size) => void;
   children: ReactNode;
-  position: Position;
+  origin: Origin;
 }
 
 export const StackElement: FC<StackElementProps> = ({
   index,
   onSizeChange,
   children,
-  position,
+  origin,
 }) => {
   const ref = useRefWithSize<SVGGElement>();
-  const { x, y } = position;
+  const { x, y } = origin;
 
   const [offsetX, setOffsetX] = useState<number>(0);
   const [offsetY, setOffsetY] = useState<number>(0);

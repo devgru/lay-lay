@@ -12,19 +12,9 @@ export type RefProps = {
 
 export type NullableRefObject<E> = RefObject<E | null>;
 
-export type RefObjectWithSize<E> = NullableRefObject<E> & {
-  width: number;
-  height: number;
-};
+export type RefObjectWithSize<E> = NullableRefObject<E> & Size;
 
-export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
-  left: number;
-  horizontalCenter: number;
-  right: number;
-  top: number;
-  verticalCenter: number;
-  bottom: number;
-};
+export type RefObjectWithBox<E> = NullableRefObject<E> & Box;
 
 export interface HtmlWrapperProps
   extends SVGAttributes<SVGForeignObjectElement> {
@@ -53,6 +43,17 @@ export interface Size {
 }
 
 export interface Position {
+  left: number;
+  horizontalCenter: number;
+  right: number;
+  top: number;
+  verticalCenter: number;
+  bottom: number;
+}
+
+export interface Box extends Size, Position {}
+
+export interface Origin {
   x: number;
   y: number;
 }

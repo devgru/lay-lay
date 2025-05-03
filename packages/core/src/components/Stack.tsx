@@ -9,11 +9,11 @@ import {
 import type { Size, StackDirection, StackProps } from '../types.ts';
 import { StackElement } from './StackElement.tsx';
 
-const positionAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
+const originAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
   let currentOffset = 0;
 
   return (index: number) => {
-    const position =
+    const origin =
       stackDirection === 'horizontal'
         ? { x: currentOffset, y: 0 }
         : { x: 0, y: currentOffset };
@@ -24,7 +24,7 @@ const positionAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
         stackDirection === 'horizontal' ? size.width : size.height;
     }
 
-    return position;
+    return origin;
   };
 };
 
@@ -34,7 +34,7 @@ export const Stack: FC<StackProps> = ({
   children,
 }) => {
   const [sizes, setSizes] = useState<Size[]>([]);
-  const getPosition = positionAccumulator(stackDirection, sizes);
+  const getOrigin = originAccumulator(stackDirection, sizes);
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
     setSizes((prevSizes) => {
@@ -87,7 +87,7 @@ export const Stack: FC<StackProps> = ({
             key={index}
             index={index}
             onSizeChange={handleSizeChange}
-            position={getPosition(index)}
+            origin={getOrigin(index)}
           >
             {child}
           </StackElement>
