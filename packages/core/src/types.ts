@@ -16,6 +16,8 @@ export type RefObjectWithSize<E> = NullableRefObject<E> & Size;
 
 export type RefObjectWithBox<E> = NullableRefObject<E> & Box;
 
+export type RefObjectWithOrigin<E> = NullableRefObject<E> & Origin;
+
 export interface HtmlWrapperProps
   extends SVGAttributes<SVGForeignObjectElement> {
   ref?: Ref<HTMLDivElement>;
