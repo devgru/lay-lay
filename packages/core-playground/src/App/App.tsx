@@ -7,15 +7,13 @@ import { Header } from './pages/Header.tsx';
 import { AutoStackLayoutDemo } from './pages/AutoStackLayoutDemo.tsx';
 import { LineByLineDemo } from './pages/LineByLineDemo.tsx';
 import { ElementAlongPathDemo } from './pages/ElementAlongPathDemo.tsx';
-import { SvgPositioningDemo } from './pages/SvgPositioningDemo.tsx';
 import { ManualLayoutDemo } from './pages/ManualLayoutDemo.tsx';
-import { HtmlPositioningDemo } from './pages/HtmlPositioningDemo.tsx';
+import { LayersPositioningDemo } from './pages/LayersPositioningDemo.tsx';
 
 const App = () => (
   <div>
     <Header />
-    <HtmlPositioningDemo />
-    <SvgPositioningDemo />
+    <LayersPositioningDemo />
     <LineByLineDemo />
     <ManualLayoutDemo />
     <ConfigurableStackLayoutDemo />

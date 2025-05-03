@@ -1,15 +1,22 @@
 import {
-  type RefObjectWithSize,
+  type Size,
   SvgOrigin,
   useRefWithBox,
   useRefWithSize,
+  useSizeState,
 } from '@lay-lay/core';
 import { useWindowSize } from '@react-hook/window-size/throttled';
+import { useLayoutEffect } from 'react';
 
-function G({ ref }: { ref: RefObjectWithSize<SVGGElement> }) {
+function G({ setSize }: { setSize: (size: Size) => void }) {
+  const ref = useRefWithSize<SVGGElement>();
   const boxA = useRefWithBox<SVGRectElement>();
   const boxB = useRefWithBox<SVGRectElement>();
   const boxC = useRefWithBox<SVGRectElement>();
+
+  useLayoutEffect(() => {
+    setSize(ref);
+  });
 
   return (
     <g ref={ref}>
@@ -21,9 +28,9 @@ function G({ ref }: { ref: RefObjectWithSize<SVGGElement> }) {
 }
 
 export const ManualLayoutDemo = () => {
-  const gRef = useRefWithSize<SVGGElement>();
-
   useWindowSize();
+
+  const { width, height, setSize } = useSizeState();
 
   return (
     <div>
@@ -35,11 +42,11 @@ export const ManualLayoutDemo = () => {
         hooks are returning incorrect values.
       </p>
       <SvgOrigin
-        width={gRef.width}
-        height={gRef.height}
+        width={width}
+        height={height}
         style={{ backgroundColor: 'yellow' }}
       >
-        <G ref={gRef} />
+        <G setSize={setSize} />
       </SvgOrigin>
     </div>
   );
