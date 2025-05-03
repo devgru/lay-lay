@@ -11,7 +11,7 @@ export const useOrigin = (): OriginGetter => {
 
   if (context === null) {
     throw new Error(
-      'useOrigin must be used within an OriginContext.Provider, e.g. SvgOrigin from @lay-lay/core.'
+      'useOrigin must be used within an OriginContext.Provider, e.g. SvgOrigin from @lay-lay/core.',
     );
   }
 

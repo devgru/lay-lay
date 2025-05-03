@@ -9,11 +9,11 @@ export const useSizeState = (): SizeState => {
       setWidth(size.width);
       setHeight(size.height);
     },
-    [setWidth, setHeight]
+    [setWidth, setHeight],
   );
   return {
     width,
     height,
-    setSize
+    setSize,
   };
 };

@@ -1,5 +1,5 @@
-import { type ReactNode, useLayoutEffect, useState } from 'react';
 import type { FC } from 'react';
+import { type ReactNode, useLayoutEffect, useState } from 'react';
 import { useRefWithSize } from '../hooks/useRefWithSize.ts';
 import type { Position, Size } from '../types.ts';
 
@@ -55,9 +55,7 @@ export const StackElement: FC<StackElementProps> = ({
 
   return (
     <g transform={`translate(${x} ${y}) translate(${-offsetX} ${-offsetY})`}>
-      <g ref={ref}>
-        {children}
-      </g>
+      <g ref={ref}>{children}</g>
     </g>
   );
 };

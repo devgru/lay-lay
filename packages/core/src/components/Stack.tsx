@@ -37,10 +37,10 @@ export const Stack: FC<StackProps> = ({
   const getPosition = positionAccumulator(stackDirection, sizes);
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
-    setSizes((prev) => {
-      const next = [...prev];
-      next[index] = newSize;
-      return next;
+    setSizes((prevSizes) => {
+      const newSizes = [...prevSizes];
+      newSizes[index] = newSize;
+      return newSizes;
     });
   }, []);
 

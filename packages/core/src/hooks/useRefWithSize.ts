@@ -1,13 +1,12 @@
-
 import type {
   RefObjectWithSize,
   RefProps,
-  SVGOrHTMLElement
+  SVGOrHTMLElement,
 } from '../types.ts';
 import { useLayoutEffect, useRef, useState } from 'react';
 
 export const useRefWithSize = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps>
+  props?: Partial<RefProps>,
 ): RefObjectWithSize<E> => {
   const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;

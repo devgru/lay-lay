@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { useOrigin } from '../contexts.ts';
 
 export const useRefWithBox = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps>
+  props?: Partial<RefProps>,
 ): RefObjectWithBox<E> => {
   const ref = useRef(null);
   const initialValue = props?.initialValue ?? 0;
