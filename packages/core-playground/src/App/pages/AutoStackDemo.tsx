@@ -5,7 +5,7 @@ import {
   VerticalStack,
 } from '@lay-lay/core';
 
-export const AutoStackLayoutDemo = () => {
+export const AutoStackDemo = () => {
   const rootSizeState = useSizeState();
   const shapesSizeState = useSizeState();
 
@@ -39,7 +39,6 @@ export const AutoStackLayoutDemo = () => {
             <circle r={50} fill="blue" />
             <HtmlWrapper
               width={71}
-              height={71}
               transform="translate(100 -1000) rotate(45) translate(100)"
             >
               <div

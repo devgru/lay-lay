@@ -42,11 +42,13 @@ export const StackElement: FC<StackElementProps> = ({
   });
 
   useLayoutEffect(() => {
-    onSizeChange(index, {
-      width: ref.width,
-      height: ref.height,
-    });
-  }, [index, ref.width, ref.height, onSizeChange]);
+    if (ref.size) {
+      onSizeChange(index, {
+        width: ref.size.width,
+        height: ref.size.height,
+      });
+    }
+  }, [index, ref.size, ref.size?.width, ref.size?.height, onSizeChange]);
 
   return (
     <g transform={`translate(${x} ${y}) translate(${-offsetX} ${-offsetY})`}>

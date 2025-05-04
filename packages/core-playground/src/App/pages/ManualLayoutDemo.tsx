@@ -15,14 +15,32 @@ function G({ setSize }: { setSize: (size: Size) => void }) {
   const boxC = useRefWithBox<SVGRectElement>();
 
   useLayoutEffect(() => {
-    setSize(ref);
+    if (ref.size) {
+      setSize(ref.size);
+    }
   });
 
   return (
     <g ref={ref}>
       <rect width={50} height={50} ref={boxA} fill="red" />
-      <rect width={50} height={50} y={boxA.bottom} ref={boxB} fill="green" />
-      <rect width={50} height={50} y={boxB.bottom} ref={boxC} fill="blue" />
+      {boxA.position && (
+        <rect
+          width={50}
+          height={50}
+          y={boxA.position.bottom}
+          ref={boxB}
+          fill="green"
+        />
+      )}
+      {boxB.position && (
+        <rect
+          width={50}
+          height={50}
+          y={boxB.position.bottom}
+          ref={boxC}
+          fill="blue"
+        />
+      )}
     </g>
   );
 }

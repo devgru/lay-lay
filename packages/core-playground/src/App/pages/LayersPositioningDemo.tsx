@@ -22,20 +22,22 @@ const InnerComponent = () => {
             margin: '0 auto',
           }}
         >
-          left: {ref.left}
+          left: {ref.position?.left ?? 0}
           <br />
-          top: {ref.top}
+          top: {ref.position?.top ?? 0}
         </div>
       </div>
       <svg style={style}>
-        <rect
-          x={ref.left}
-          y={ref.top}
-          width={ref.width}
-          height={ref.height}
-          fill="red"
-          style={{ opacity: 0.5 }}
-        />
+        {ref.position && ref.size && (
+          <rect
+            x={ref.position.left}
+            y={ref.position.top}
+            width={ref.size.width}
+            height={ref.size.height}
+            fill="red"
+            style={{ opacity: 0.5 }}
+          />
+        )}
       </svg>
     </>
   );

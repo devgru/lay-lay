@@ -1,24 +1,25 @@
-import type {
-  RefObjectWithOrigin,
-  RefProps,
-  SVGOrHTMLElement,
-} from '../types.ts';
+import type { RefObjectWithOrigin, SVGOrHTMLElement } from '../types.ts';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useOrigin } from '../contexts.ts';
 
-export const useRefWithOrigin = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps>,
-): RefObjectWithOrigin<E> => {
+export const useRefWithOrigin = <
+  E extends SVGOrHTMLElement,
+>(): RefObjectWithOrigin<E> => {
   const ref = useRef(null);
-  const initialValue = props?.initialValue ?? 0;
   const getOrigin = useOrigin();
 
-  const [x, updateX] = useState<number>(initialValue);
-  const [y, updateY] = useState<number>(initialValue);
+  const [x, updateX] = useState<number | undefined>(undefined);
+  const [y, updateY] = useState<number | undefined>(undefined);
 
   const internalRef: RefObjectWithOrigin<E> = ref as RefObjectWithOrigin<E>;
-  internalRef.x = x;
-  internalRef.y = y;
+  if (internalRef.origin === undefined) {
+    if (x !== undefined && y !== undefined) {
+      internalRef.origin = { x, y };
+    }
+  } else {
+    internalRef.origin.x = x!;
+    internalRef.origin.y = y!;
+  }
 
   useLayoutEffect(() => {
     const element = internalRef.current;

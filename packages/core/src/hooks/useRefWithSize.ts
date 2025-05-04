@@ -1,21 +1,22 @@
-import type {
-  RefObjectWithSize,
-  RefProps,
-  SVGOrHTMLElement,
-} from '../types.ts';
+import type { RefObjectWithSize, SVGOrHTMLElement } from '../types.ts';
 import { useLayoutEffect, useRef, useState } from 'react';
 
-export const useRefWithSize = <E extends SVGOrHTMLElement>(
-  props?: Partial<RefProps>,
-): RefObjectWithSize<E> => {
+export const useRefWithSize = <
+  E extends SVGOrHTMLElement,
+>(): RefObjectWithSize<E> => {
   const ref = useRef(null);
-  const initialValue = props?.initialValue ?? 0;
 
-  const [width, updateWidth] = useState<number>(initialValue);
-  const [height, updateHeight] = useState<number>(initialValue);
+  const [width, updateWidth] = useState<number | undefined>();
+  const [height, updateHeight] = useState<number | undefined>();
   const internalRef: RefObjectWithSize<E> = ref as RefObjectWithSize<E>;
-  internalRef.width = width;
-  internalRef.height = height;
+  if (internalRef.size === undefined) {
+    if (width !== undefined && height !== undefined) {
+      internalRef.size = { width, height };
+    }
+  } else {
+    internalRef.size.width = width!;
+    internalRef.size.height = height!;
+  }
 
   useLayoutEffect(() => {
     const element = internalRef.current;

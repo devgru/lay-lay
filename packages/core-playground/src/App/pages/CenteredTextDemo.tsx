@@ -11,15 +11,15 @@ export const CenteredTextDemo = () => {
     <>
       <h2>Centered text demo</h2>
       <p>
-        SvgOrigin size is defined by HtmlWrapper contents, SvgOrigin container exposes its center
-        via ref.
+        SvgOrigin size is defined by HtmlWrapper contents, SvgOrigin container
+        exposes its center via ref.
       </p>
       <SvgOrigin
         ref={svgRef}
         style={{ background: '#eee', width: '100%' }}
-        height={htmlRef.height}
+        height={htmlRef.size?.height}
       >
-        <HtmlWrapper width="100%" ref={htmlRef} height={htmlRef.height}>
+        <HtmlWrapper width="100%" ref={htmlRef}>
           <p style={{ margin: 0, color: 'black' }}>
             Hello!
             <br />
@@ -29,7 +29,7 @@ export const CenteredTextDemo = () => {
         </HtmlWrapper>
       </SvgOrigin>
       <p>
-        SvgOrigin size: {svgRef.width} × {svgRef.height}
+        SvgOrigin size: {svgRef.size?.width} × {svgRef.size?.height}
       </p>
     </>
   );

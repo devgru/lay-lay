@@ -6,21 +6,24 @@ import type {
   SVGAttributes,
 } from 'react';
 
-export type RefProps = {
-  initialValue: number;
-};
-
 export type NullableRefObject<E> = RefObject<E | null>;
 
-export type RefObjectWithSize<E> = NullableRefObject<E> & Size;
+export type RefObjectWithSize<E> = NullableRefObject<E> & {
+  size?: Size;
+};
 
-export type RefObjectWithBox<E> = NullableRefObject<E> & Box;
+export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
+  position?: Position;
+};
 
-export type RefObjectWithOrigin<E> = NullableRefObject<E> & Origin;
+export type RefObjectWithOrigin<E> = NullableRefObject<E> & {
+  origin?: Origin;
+};
 
 export interface HtmlWrapperProps
-  extends SVGAttributes<SVGForeignObjectElement> {
+  extends Omit<SVGAttributes<SVGForeignObjectElement>, 'height'> {
   ref?: Ref<HTMLDivElement>;
+  width: number | string;
 }
 
 export interface HtmlOriginProps extends HTMLAttributes<HTMLDivElement> {

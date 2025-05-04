@@ -4,7 +4,7 @@ import {
   HtmlWrapper,
   useRefWithSize,
   useSizeState,
-  VerticalStack
+  VerticalStack,
 } from '@lay-lay/core';
 
 export const ConfigurableStackLayoutDemo = () => {
@@ -35,12 +35,7 @@ export const ConfigurableStackLayoutDemo = () => {
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
         <VerticalStack sizeState={rootSizeState}>
-          <HtmlWrapper
-            ref={htmlRef}
-            width={foWidth}
-            height={htmlRef.height}
-            fontSize={30}
-          >
+          <HtmlWrapper ref={htmlRef} width={foWidth} fontSize={30}>
             <div style={{ border: '1px solid red' }}>
               The width is {rootSizeState.width}
               <br />
