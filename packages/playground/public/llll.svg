@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256">
-  <defs>
-    <path id="a" d="M4 68h8v184H4zm16 0h8v184h-8zm16 0h8v184h-8zm16 0h8v184h-8zm72 160v8H68v-8zm0 16v8H68v-8zm0-32v8H68v-8zm0-16v8H68v-8z"/>
-  </defs>
-  <use fill="#00471b" href="#a"/>
-  <use fill="#0068a2" href="#a" transform="translate(128)"/>
-  <use fill="#d36100" href="#a" transform="rotate(180 128 128)"/>
-  <use fill="#c6005a" href="#a" transform="rotate(180 128 128) translate(128)"/>
-</svg>

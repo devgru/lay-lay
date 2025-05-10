@@ -1,9 +1,9 @@
 export const Header = () => {
   return (
     <>
-      <h1>Layered Layouts</h1>
+      <h1>Layered layouts</h1>
       <p>
-        <strong>Layered Layouts</strong> is a POC project aiming to help
+        <strong>Layered layouts</strong> is a POC project aiming to help
         building documents with complex layouts using both HTML and SVG
         elements.
       </p>
