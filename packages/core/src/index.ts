@@ -1,5 +1,6 @@
 export * from './types.ts';
 
+export { AlignToOrigin } from './components/AlignToOrigin.tsx';
 export { HtmlOrigin } from './components/HtmlOrigin.tsx';
 export { HtmlWrapper } from './components/HtmlWrapper.tsx';
 export { HorizontalStack } from './components/HorizontalStack.tsx';

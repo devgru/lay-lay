@@ -1,13 +1,17 @@
 import {
   HorizontalStack,
   HtmlWrapper,
+  AlignToOrigin,
   useSizeState,
   VerticalStack,
 } from '@lay-lay/core';
+import { useWindowSize } from '@react-hook/window-size/throttled';
 
 export const AutoStackDemo = () => {
   const rootSizeState = useSizeState();
   const shapesSizeState = useSizeState();
+
+  useWindowSize();
 
   return (
     <>
@@ -29,32 +33,40 @@ export const AutoStackDemo = () => {
             </p>
           </HtmlWrapper>
           <HorizontalStack sizeState={shapesSizeState}>
-            <circle r={50} fill="red" />
-            <rect
-              width={71}
-              height={71}
-              fill="green"
-              transform="translate(100 -1000) rotate(45) translate(100)"
-            />
-            <circle r={50} fill="blue" />
-            <HtmlWrapper
-              width={71}
-              transform="translate(100 -1000) rotate(45) translate(100)"
-            >
-              <div
-                style={{
-                  backgroundColor: 'yellow',
-                  color: 'black',
-                  fontSize: '17pt',
-                  textAlign: 'center',
-                }}
+            <AlignToOrigin>
+              <circle r={50} fill="red" />
+            </AlignToOrigin>
+            <AlignToOrigin>
+              <rect
+                width={71}
+                height={71}
+                fill="green"
+                transform="translate(100 -1000) rotate(45) translate(100)"
+              />
+            </AlignToOrigin>
+            <AlignToOrigin>
+              <circle r={50} fill="blue" />
+            </AlignToOrigin>
+            <AlignToOrigin>
+              <HtmlWrapper
+                width={71}
+                transform="translate(100 -1000) rotate(45) translate(100)"
               >
-                <div>some</div>
-                <div>
-                  <code>html</code>
+                <div
+                  style={{
+                    backgroundColor: 'yellow',
+                    color: 'black',
+                    fontSize: '17pt',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div>some</div>
+                  <div>
+                    <code>html</code>
+                  </div>
                 </div>
-              </div>
-            </HtmlWrapper>
+              </HtmlWrapper>
+            </AlignToOrigin>
           </HorizontalStack>
         </VerticalStack>
       </svg>

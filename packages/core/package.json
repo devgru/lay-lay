@@ -6,7 +6,6 @@
     "react",
     "refs",
     "svg",
-    "guides",
     "foreignObject"
   ],
   "type": "module",
