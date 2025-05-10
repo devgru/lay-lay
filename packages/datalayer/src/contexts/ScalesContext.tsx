@@ -26,10 +26,4 @@ export const ScalesProvider: React.FC<ScalesProviderProps> = ({
   children,
   xScale,
   yScale,
-}) => {
-  return (
-    <ScalesContext.Provider value={{ xScale, yScale }}>
-      {children}
-    </ScalesContext.Provider>
-  );
-}; 
+}) => <ScalesContext value={{ xScale, yScale }}>{children}</ScalesContext>;

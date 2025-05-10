@@ -1,6 +1,6 @@
-# MarginG
+# Offset
 
-Renders `g` element, translated by specified props.
+Renders `g` element, offset as specified in props.
 
 ## Children
 

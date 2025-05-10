@@ -1,12 +1,12 @@
 import React from 'react';
 
-interface MarginGProps {
+interface OffsetProps {
   left?: number;
   top?: number;
   children?: React.ReactNode;
 }
 
-export const MarginG: React.FC<MarginGProps> = ({
+export const Offset: React.FC<OffsetProps> = ({
   left = 0,
   top = 0,
   children = null,

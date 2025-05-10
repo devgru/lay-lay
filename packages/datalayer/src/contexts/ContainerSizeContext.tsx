@@ -33,7 +33,7 @@ export const ContainerSizeProvider: React.FC<ContainerSizeProviderProps> = ({
   const [height, setHeight] = useState(0);
 
   return (
-    <ContainerSizeContext.Provider
+    <ContainerSizeContext
       value={{
         width,
         height,
@@ -42,6 +42,6 @@ export const ContainerSizeProvider: React.FC<ContainerSizeProviderProps> = ({
       }}
     >
       {children}
-    </ContainerSizeContext.Provider>
+    </ContainerSizeContext>
   );
 };

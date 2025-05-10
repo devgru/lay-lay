@@ -2,7 +2,7 @@ import React from 'react';
 import { scaleLinear } from 'd3-scale';
 
 import { Clip } from './Clip.tsx';
-import { MarginG } from './MarginG.tsx';
+import { Offset } from './Offset.tsx';
 import { BasicAxes } from './BasicAxes.tsx';
 import { ScalesProvider } from '../contexts/ScalesContext.tsx';
 
@@ -36,7 +36,7 @@ export const BasicChart: React.FC<BasicChartProps> = ({
   const yScale = scaleLinear().domain(yDomain).range([innerHeight, 0]);
 
   return (
-    <MarginG left={margin.left} top={margin.top}>
+    <Offset left={margin.left} top={margin.top}>
       <ScalesProvider xScale={xScale} yScale={yScale}>
         <BasicAxes
           xPadding={xPadding}
@@ -48,6 +48,6 @@ export const BasicChart: React.FC<BasicChartProps> = ({
           {children}
         </Clip>
       </ScalesProvider>
-    </MarginG>
+    </Offset>
   );
 };
