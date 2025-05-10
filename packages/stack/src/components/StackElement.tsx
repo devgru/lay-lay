@@ -1,6 +1,5 @@
 import { type FC, type ReactNode, useLayoutEffect } from 'react';
-import { useRefWithSize } from '../hooks/useRefWithSize.ts';
-import type { Origin, Size } from '../types.ts';
+import { type Origin, type Size, useRefWithSize } from '@lay-lay/core';
 
 export interface StackElementProps {
   index: number;

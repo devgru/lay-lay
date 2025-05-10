@@ -4,16 +4,16 @@ import type { Origin } from './types.ts';
 
 type OriginGetter = () => Origin;
 
-export const OriginContext = createContext<OriginGetter | null>(null);
+export const GetOriginContext = createContext<OriginGetter | null>(null);
 
-export const useOrigin = (): OriginGetter => {
-  const context = useContext(OriginContext);
+export const useGetOrigin = (): OriginGetter => {
+  const contextValue = useContext(GetOriginContext);
 
-  if (context === null) {
+  if (contextValue === null) {
     throw new Error(
-      'useOrigin must be used within an OriginContext.Provider, e.g. SvgOrigin from @lay-lay/core.',
+      'useOrigin must be used within an OriginContext, e.g. SvgOrigin from @lay-lay/core.',
     );
   }
 
-  return context;
+  return contextValue;
 };

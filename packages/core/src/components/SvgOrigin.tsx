@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import type { SvgOriginProps } from '../types.ts';
-import { OriginContext } from '../contexts.ts';
+import { GetOriginContext } from '../contexts.ts';
 import { useOriginRef } from '../hooks/useOriginRef.tsx';
 
 export const SvgOrigin: FC<SvgOriginProps> = ({ children, ref, ...props }) => {
@@ -8,9 +8,9 @@ export const SvgOrigin: FC<SvgOriginProps> = ({ children, ref, ...props }) => {
 
   return (
     <svg {...props} ref={originRef}>
-      <OriginContext.Provider value={getOrigin}>
+      <GetOriginContext value={getOrigin}>
         {refReady && children}
-      </OriginContext.Provider>
+      </GetOriginContext>
     </svg>
   );
 };

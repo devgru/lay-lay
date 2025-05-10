@@ -1,10 +1,4 @@
-import type {
-  HTMLAttributes,
-  ReactNode,
-  Ref,
-  RefObject,
-  SVGAttributes,
-} from 'react';
+import type { HTMLAttributes, Ref, RefObject, SVGAttributes } from 'react';
 
 export type NullableRefObject<E> = RefObject<E | null>;
 
@@ -13,11 +7,7 @@ export type RefObjectWithSize<E> = NullableRefObject<E> & {
 };
 
 export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
-  position?: Position;
-};
-
-export type RefObjectWithOrigin<E> = NullableRefObject<E> & {
-  origin?: Origin;
+  box?: Box;
 };
 
 export interface HtmlWrapperProps
@@ -34,20 +24,12 @@ export interface SvgOriginProps extends SVGAttributes<SVGSVGElement> {
   ref?: Ref<SVGSVGElement>;
 }
 
-export type StackDirection = 'horizontal' | 'vertical';
-
-export interface StackProps {
-  children: ReactNode;
-  stackDirection: StackDirection;
-  sizeState?: SizeState;
-}
-
 export interface Size {
   width: number;
   height: number;
 }
 
-export interface Position {
+export interface Box {
   left: number;
   horizontalCenter: number;
   right: number;
@@ -56,14 +38,17 @@ export interface Position {
   bottom: number;
 }
 
-export interface Box extends Size, Position {}
-
 export interface Origin {
   x: number;
   y: number;
 }
 
-export type SizeState = Size & {
-  setSize: (size: Size) => void;
+export type SizeSetter = (width: number, height: number) => void;
+
+export type SizeObserver = {
+  width: number | undefined;
+  height: number | undefined;
+  setSize: SizeSetter;
 };
+
 export type SVGOrHTMLElement = SVGElement | HTMLElement;

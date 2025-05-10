@@ -2,20 +2,20 @@
 
 > The library provides a set of React hooks and components to capture elements' measurements and expose them via refs, enabling coordinating HTML and SVG elements in complex multi-layered layouts.
 
-Explore `@lay-lay/core-playground` package for a glimpse of the library's features.
+Explore `@lay-lay/playground` package for a glimpse of the library's features.
 
 ## Usage
 
 ### Size measurement
 
-1. Use `useRefWithSize` hook to track element's width and height:
+1. Use `useRefWithSize` hook to track element's size:
 
-```typescript jsx
+```tsx
 import { useRefWithSize } from '@lay-lay/core';
 
 const circleRef = useRefWithSize<SVGCircleElement>();
 return (
-  <svg width={circleRef.width} height={circleRef.height}>
+  <svg width={circleRef.size?.width ?? 0} height={circleRef.size?.height ?? 0}>
     <circle
       ref={circleRef}
       r={10}
@@ -27,80 +27,44 @@ return (
 );
 ```
 
-2. To combine `svg` and `html` elements, use `HTML` component. It renders as a `div` within a `foreignObject`, the `ref` is attached to the `div`:
+2. To render `html` elements in `svg` container, use `HtmlWrapper` component. It renders as a `foreignObject` containing a `div`, the `ref` is attached to the `div`. Width is required and height is omitted.
 
-```typescript jsx
-import { HTML, useRefWithSize } from '@lay-lay/core';
+```tsx
+import { HtmlWrapper, useRefWithSize } from '@lay-lay/core';
 
 const divRef = useRefWithSize<HTMLDivElement>();
 return (
-  <svg width={divRef.width} height={divRef.height}>
-    <HTML ref={divRef}>
+  <svg width={200} height={divRef.size?.height}>
+    <HtmlWrapper ref={divRef} width={200}>
       foreignObject inside SVG
-    </HTML>
+    </HtmlWrapper>
   </svg>
 );
 ```
 
 ### Position measurement
 
-1. Use `useRefWithBox` hook to track both element's size and position:
+1. Use `SvgOrigin` or `HtmlOrigin` component to set the origin point for boxes, depending on the parent element type.
 
-```typescript jsx
-import { useRefWithBox } from '@lay-lay/core';
+2. Use `useRefWithBox` hook to track both elements' size and box measurements:
+
+```tsx
+import { useRefWithBox, SvgOrigin } from '@lay-lay/core';
 
 const circleRef = useRefWithBox<SVGCircleElement>();
+console.log(circleRef.box?.right);
+
 return (
-  <svg width={circleRef.width} height={circleRef.height}>
-    <circle
-      ref={circleRef}
-      r={10}
-      cx={10}
-      cy={10}
-      fill="currentColor"
-    />
+  <svg width={circleRef.size?.width ?? 0} height={circleRef.size?.height ?? 0}>
+    <SvgOrigin>
+        <circle
+          ref={circleRef}
+          r={10}
+          cx={10}
+          cy={10}
+          fill="currentColor"
+        />
+    </SvgOrigin>
   </svg>
 );
-```
-
-2. Optionally use `SVG` component to switch the origin point for boxes, from the page's origin to the `SVG` element's origin:
-
-```typescript jsx
-import { SVG, HTML, useRefWithBox } from '@lay-lay/core';
-
-const divRef = useRefWithBox<HTMLDivElement>();
-
-return (
-  <SVG>
-    <HTML ref={divRef}>
-      foreignObject inside SVG
-    </HTML>
-  </SVG>
-);
-```
-
-## Types
-
-```typescript
-type RefObjectWithSize<E> = RefObject<E | null> & {
-  width: number;
-  height: number;
-};
-
-type RefObjectWithBox<E> = RefObjectWithSize<E> & {
-  left: number;
-  horizontalCenter: number;
-  right: number;
-  top: number;
-  verticalCenter: number;
-  bottom: number;
-};
-
-interface HtmlProps extends SVGAttributes<SVGForeignObjectElement> {
-  ref?: RefObject<HTMLDivElement | null>;
-}
-
-interface SvgProps extends SVGAttributes<SVGSVGElement> {
-  ref: RefObject<SVGSVGElement | null>;
-}
 ```

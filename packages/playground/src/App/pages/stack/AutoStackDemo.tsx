@@ -1,15 +1,10 @@
-import {
-  HorizontalStack,
-  HtmlWrapper,
-  AlignToOrigin,
-  useSizeState,
-  VerticalStack,
-} from '@lay-lay/core';
+import { HtmlWrapper, useSizeObserver } from '@lay-lay/core';
 import { useWindowSize } from '@react-hook/window-size/throttled';
+import { NegateOffset, HorizontalStack, VerticalStack } from '@lay-lay/stack';
 
 export const AutoStackDemo = () => {
-  const rootSizeState = useSizeState();
-  const shapesSizeState = useSizeState();
+  const rootSizeObserver = useSizeObserver();
+  const shapesSizeObserver = useSizeObserver();
 
   useWindowSize();
 
@@ -20,10 +15,10 @@ export const AutoStackDemo = () => {
         Verifies that both vertical and horizontal stacking is working as
         expected.
       </p>
-      <svg width={rootSizeState.width} height={rootSizeState.height}>
-        <VerticalStack sizeState={rootSizeState}>
+      <svg width={rootSizeObserver.width} height={rootSizeObserver.height}>
+        <VerticalStack onSizeCalculated={rootSizeObserver.setSize}>
           <HtmlWrapper
-            width={shapesSizeState.width}
+            width={shapesSizeObserver.width ?? 0}
             style={{ textAlign: 'center', fontSize: '16pt' }}
           >
             <p>
@@ -32,22 +27,22 @@ export const AutoStackDemo = () => {
               based on their size.
             </p>
           </HtmlWrapper>
-          <HorizontalStack sizeState={shapesSizeState}>
-            <AlignToOrigin>
+          <HorizontalStack onSizeCalculated={shapesSizeObserver.setSize}>
+            <NegateOffset>
               <circle r={50} fill="red" />
-            </AlignToOrigin>
-            <AlignToOrigin>
+            </NegateOffset>
+            <NegateOffset>
               <rect
                 width={71}
                 height={71}
                 fill="green"
                 transform="translate(100 -1000) rotate(45) translate(100)"
               />
-            </AlignToOrigin>
-            <AlignToOrigin>
+            </NegateOffset>
+            <NegateOffset>
               <circle r={50} fill="blue" />
-            </AlignToOrigin>
-            <AlignToOrigin>
+            </NegateOffset>
+            <NegateOffset>
               <HtmlWrapper
                 width={71}
                 transform="translate(100 -1000) rotate(45) translate(100)"
@@ -66,7 +61,7 @@ export const AutoStackDemo = () => {
                   </div>
                 </div>
               </HtmlWrapper>
-            </AlignToOrigin>
+            </NegateOffset>
           </HorizontalStack>
         </VerticalStack>
       </svg>

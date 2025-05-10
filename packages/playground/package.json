@@ -1,5 +1,5 @@
 {
-  "name": "@lay-lay/core-playground",
+  "name": "@lay-lay/playground",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@lay-lay/core": "workspace:*",
+    "@lay-lay/stack": "workspace:*",
     "@react-hook/window-size": "^3.1.1",
     "@types/d3-scale": "^4.0.8",
     "@types/react": "^19.0.0",

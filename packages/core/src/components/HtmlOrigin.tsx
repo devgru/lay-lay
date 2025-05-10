@@ -1,6 +1,6 @@
 import { type FC } from 'react';
 import type { HtmlOriginProps } from '../types.ts';
-import { OriginContext } from '../contexts.ts';
+import { GetOriginContext } from '../contexts.ts';
 import { useOriginRef } from '../hooks/useOriginRef.tsx';
 
 export const HtmlOrigin: FC<HtmlOriginProps> = ({
@@ -12,9 +12,9 @@ export const HtmlOrigin: FC<HtmlOriginProps> = ({
 
   return (
     <div {...props} ref={originRef}>
-      <OriginContext.Provider value={getOrigin}>
+      <GetOriginContext value={getOrigin}>
         {refReady && children}
-      </OriginContext.Provider>
+      </GetOriginContext>
     </div>
   );
 };

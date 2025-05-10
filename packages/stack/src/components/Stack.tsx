@@ -6,36 +6,46 @@ import {
   useLayoutEffect,
   useState,
 } from 'react';
-import type { Size, StackDirection, StackProps } from '../types.ts';
+import type { StackOrientation, StackProps } from '../types.ts';
 import { StackElement } from './StackElement.tsx';
 import { DOM_EPSILON } from '../constants.ts';
+import type { Origin, Size } from '@lay-lay/core';
 
-const originAccumulator = (stackDirection: StackDirection, sizes: Size[]) => {
+const originAccumulator = (
+  stackOrientation: StackOrientation,
+  sizes: Size[],
+) => {
   let currentOffset = 0;
 
-  return (index: number) => {
-    const origin =
-      stackDirection === 'horizontal'
-        ? { x: currentOffset, y: 0 }
-        : { x: 0, y: currentOffset };
-
+  return (index: number): Origin => {
     const size = sizes[index];
-    if (size) {
-      currentOffset +=
-        stackDirection === 'horizontal' ? size.width : size.height;
+    if (stackOrientation === 'horizontal') {
+      const origin = { x: currentOffset, y: 0 };
+      if (size) {
+        currentOffset += size.width;
+      }
+      return origin;
+    } else {
+      const origin = { x: 0, y: currentOffset };
+      if (size) {
+        currentOffset += size.height;
+      }
+      return origin;
     }
-
-    return origin;
   };
 };
 
 export const Stack: FC<StackProps> = ({
-  stackDirection,
-  sizeState,
+  stackOrientation,
+  onSizeCalculated,
   children,
 }) => {
+  if (stackOrientation !== 'horizontal' && stackOrientation !== 'vertical') {
+    throw new Error(`Invalid stack orientation: ${stackOrientation}`);
+  }
+
   const [sizes, setSizes] = useState<Size[]>([]);
-  const getOrigin = originAccumulator(stackDirection, sizes);
+  const getOrigin = originAccumulator(stackOrientation, sizes);
 
   const handleSizeChange = useCallback((index: number, newSize: Size) => {
     setSizes((prevSizes) => {
@@ -73,17 +83,11 @@ export const Stack: FC<StackProps> = ({
       }
       return max;
     };
-    if (sizeState) {
-      if (stackDirection === 'horizontal') {
-        sizeState.setSize({
-          width: sumBy('width'),
-          height: maxBy('height'),
-        });
+    if (onSizeCalculated) {
+      if (stackOrientation === 'horizontal') {
+        onSizeCalculated(sumBy('width'), maxBy('height'));
       } else {
-        sizeState.setSize({
-          width: maxBy('width'),
-          height: sumBy('height'),
-        });
+        onSizeCalculated(maxBy('width'), sumBy('height'));
       }
     }
   });

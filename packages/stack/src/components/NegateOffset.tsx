@@ -1,7 +1,7 @@
 import { type ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { DOM_EPSILON } from '../constants.ts';
 
-export const AlignToOrigin = ({ children }: { children: ReactNode }) => {
+export const NegateOffset = ({ children }: { children: ReactNode }) => {
   const ref = useRef<SVGGElement | null>(null);
 
   const [offsetX, setOffsetX] = useState<number>(0);

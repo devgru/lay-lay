@@ -22,16 +22,16 @@ const InnerComponent = () => {
             margin: '0 auto',
           }}
         >
-          left: {ref.position?.left ?? 0}
+          left: {ref.box?.left ?? 0}
           <br />
-          top: {ref.position?.top ?? 0}
+          top: {ref.box?.top ?? 0}
         </div>
       </div>
       <svg style={style}>
-        {ref.position && ref.size && (
+        {ref.box && ref.size && (
           <rect
-            x={ref.position.left}
-            y={ref.position.top}
+            x={ref.box.left}
+            y={ref.box.top}
             width={ref.size.width}
             height={ref.size.height}
             fill="red"

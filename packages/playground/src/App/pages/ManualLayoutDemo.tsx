@@ -1,43 +1,43 @@
 import {
-  type Size,
   SvgOrigin,
   useRefWithBox,
   useRefWithSize,
-  useSizeState,
+  useSizeObserver,
+  type SizeSetter,
 } from '@lay-lay/core';
 import { useWindowSize } from '@react-hook/window-size/throttled';
 import { useLayoutEffect } from 'react';
 
-function G({ setSize }: { setSize: (size: Size) => void }) {
+function G({ setSize }: { setSize: SizeSetter }) {
   const ref = useRefWithSize<SVGGElement>();
-  const boxA = useRefWithBox<SVGRectElement>();
-  const boxB = useRefWithBox<SVGRectElement>();
-  const boxC = useRefWithBox<SVGRectElement>();
+  const rectARef = useRefWithBox<SVGRectElement>();
+  const rectBRef = useRefWithBox<SVGRectElement>();
+  const rectCRef = useRefWithBox<SVGRectElement>();
 
   useLayoutEffect(() => {
     if (ref.size) {
-      setSize(ref.size);
+      setSize(ref.size.width, ref.size.height);
     }
   });
 
   return (
     <g ref={ref}>
-      <rect width={50} height={50} ref={boxA} fill="red" />
-      {boxA.position && (
+      <rect width={50} height={50} ref={rectARef} fill="red" />
+      {rectARef.box && (
         <rect
           width={50}
           height={50}
-          y={boxA.position.bottom}
-          ref={boxB}
+          y={rectARef.box.bottom}
+          ref={rectBRef}
           fill="green"
         />
       )}
-      {boxB.position && (
+      {rectBRef.box && (
         <rect
           width={50}
           height={50}
-          y={boxB.position.bottom}
-          ref={boxC}
+          y={rectBRef.box.bottom}
+          ref={rectCRef}
           fill="blue"
         />
       )}
@@ -48,7 +48,7 @@ function G({ setSize }: { setSize: (size: Size) => void }) {
 export const ManualLayoutDemo = () => {
   useWindowSize();
 
-  const { width, height, setSize } = useSizeState();
+  const { width, height, setSize } = useSizeObserver();
 
   return (
     <div>

@@ -1,12 +1,12 @@
 import type { RefObjectWithBox, SVGOrHTMLElement } from '../types.ts';
 import { useLayoutEffect, useRef, useState } from 'react';
-import { useOrigin } from '../contexts.ts';
+import { useGetOrigin } from '../contexts.ts';
 
 export const useRefWithBox = <
   E extends SVGOrHTMLElement,
 >(): RefObjectWithBox<E> => {
   const ref = useRef(null);
-  const getOrigin = useOrigin();
+  const getOrigin = useGetOrigin();
 
   const [width, updateWidth] = useState<number | undefined>();
   const [height, updateHeight] = useState<number | undefined>();
@@ -14,7 +14,7 @@ export const useRefWithBox = <
   const [top, updateTop] = useState<number | undefined>();
 
   const internalRef: RefObjectWithBox<E> = ref as RefObjectWithBox<E>;
-  if (internalRef.position === undefined || internalRef.size === undefined) {
+  if (internalRef.box === undefined || internalRef.size === undefined) {
     if (
       width !== undefined &&
       height !== undefined &&
@@ -22,7 +22,7 @@ export const useRefWithBox = <
       top !== undefined
     ) {
       internalRef.size = { width, height };
-      internalRef.position = {
+      internalRef.box = {
         left: left,
         horizontalCenter: left + width / 2,
         right: left + width,
@@ -34,12 +34,12 @@ export const useRefWithBox = <
   } else {
     internalRef.size.width = width!;
     internalRef.size.height = height!;
-    internalRef.position.left = left!;
-    internalRef.position.horizontalCenter = left! + width! / 2;
-    internalRef.position.right = left! + width!;
-    internalRef.position.top = top!;
-    internalRef.position.verticalCenter = top! + height! / 2;
-    internalRef.position.bottom = top! + height!;
+    internalRef.box.left = left!;
+    internalRef.box.horizontalCenter = left! + width! / 2;
+    internalRef.box.right = left! + width!;
+    internalRef.box.top = top!;
+    internalRef.box.verticalCenter = top! + height! / 2;
+    internalRef.box.bottom = top! + height!;
   }
 
   useLayoutEffect(() => {

@@ -1,11 +1,12 @@
-import { SvgOrigin, useSizeState, VerticalStack } from '@lay-lay/core';
+import { SvgOrigin, useSizeObserver } from '@lay-lay/core';
 import { useWindowSize } from '@react-hook/window-size/throttled';
 import { useMemo } from 'react';
+import { VerticalStack } from '@lay-lay/stack';
 
 const colors = ['red', 'yellow', 'lime', 'cyan', 'blue', 'magenta', 'white'];
 
 export const BasicStackDemo = () => {
-  const sizeState = useSizeState();
+  const sizeObserver = useSizeObserver();
 
   const array = useMemo(() => {
     const length = 1000;
@@ -21,8 +22,11 @@ export const BasicStackDemo = () => {
         This example verifies that <code>Stack</code> work as expected,
         positioning {array.length} elements one after the other
       </p>
-      <SvgOrigin width={sizeState.width} height={sizeState.height}>
-        <VerticalStack sizeState={sizeState}>
+      <SvgOrigin
+        width={sizeObserver.width ?? 0}
+        height={sizeObserver.height ?? 0}
+      >
+        <VerticalStack onSizeCalculated={sizeObserver.setSize}>
           {array.map((i) => (
             <rect
               width={500}

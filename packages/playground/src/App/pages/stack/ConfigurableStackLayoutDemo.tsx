@@ -1,17 +1,12 @@
 import { useState } from 'react';
-import {
-  HorizontalStack,
-  HtmlWrapper,
-  useRefWithSize,
-  useSizeState,
-  VerticalStack,
-} from '@lay-lay/core';
+import { HtmlWrapper, useRefWithSize, useSizeObserver } from '@lay-lay/core';
+import { HorizontalStack, VerticalStack } from '@lay-lay/stack';
 
 export const ConfigurableStackLayoutDemo = () => {
   const [foWidth, setFoWidth] = useState(200);
 
   const htmlRef = useRefWithSize<HTMLDivElement>();
-  const rootSizeState = useSizeState();
+  const rootSizeObserver = useSizeObserver();
 
   return (
     <>
@@ -30,16 +25,16 @@ export const ConfigurableStackLayoutDemo = () => {
       />
       <br />
       <svg
-        width={rootSizeState.width}
-        height={rootSizeState.height}
+        width={rootSizeObserver.width}
+        height={rootSizeObserver.height}
         style={{ background: 'rgba(255, 0, 0, 0.1)' }}
       >
-        <VerticalStack sizeState={rootSizeState}>
+        <VerticalStack onSizeCalculated={rootSizeObserver.setSize}>
           <HtmlWrapper ref={htmlRef} width={foWidth} fontSize={30}>
             <div style={{ border: '1px solid red' }}>
-              The width is {rootSizeState.width}
+              The width is {rootSizeObserver.width}
               <br />
-              The height is {rootSizeState.height}
+              The height is {rootSizeObserver.height}
             </div>
           </HtmlWrapper>
           <HorizontalStack>
