@@ -1,5 +1,7 @@
 # @lay-lay/datalayer
 
+Part of the [Layered layouts](https://github.com/devgru/lay-lay) project.
+
 > Create React-based charts using [d3](https://d3js.org) utilities encapsulated in React elements.
 
 Exported components are described in [docs/components](./docs/components) directory.

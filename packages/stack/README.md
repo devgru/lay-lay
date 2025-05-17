@@ -1,5 +1,7 @@
 # @lay-lay/stack
 
+Part of the [Layered layouts](https://github.com/devgru/lay-lay) project.
+
 > The library provides a set of React components to implement a basic stack layout of SVG elements.
 
 Explore `@lay-lay/playground` package for a demonstration of the library's features.

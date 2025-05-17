@@ -2,34 +2,45 @@
   "name": "@lay-lay/datalayer",
   "version": "0.1.0",
   "description": "Charts, powered by React and D3, out of the box",
-  "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
+  "keywords": [
+    "react",
+    "svg",
+    "charts",
+    "d3"
+  ],
+  "homepage": "https://github.com/devgru/lay-lay#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgru/lay-lay.git"
+  },
   "license": "MIT",
+  "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
   "type": "module",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "prepack": "tsdown"
-  },
-  "types": "dist/index.d.ts",
-  "module": "dist/index.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "scripts": {
+    "prepack": "tsdown"
+  },
+  "devDependencies": {
+    "@types/d3-scale": "^4.0.9",
+    "@types/react": "^19.1.4"
+  },
   "peerDependencies": {
     "@react-hook/window-size": "^3.1.1",
     "d3-scale": "^4.0.2",
-    "@types/d3-scale": "^4.0.8",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "react": "^19.0.0",
-    "react-d3-components": "^0.9.1",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-d3-components": "^0.9.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

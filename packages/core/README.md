@@ -1,5 +1,7 @@
 # @lay-lay/core
 
+Part of the [Layered layouts](https://github.com/devgru/lay-lay) project. 
+
 > The library provides a set of React hooks and components to capture elements' measurements and expose them via refs, enabling coordinating HTML and SVG elements in complex multi-layered layouts.
 
 Explore `@lay-lay/playground` package for a glimpse of the library's features.

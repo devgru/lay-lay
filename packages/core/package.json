@@ -4,26 +4,44 @@
   "description": "Refs on steroids that track element's size and position",
   "keywords": [
     "react",
+    "hooks",
     "refs",
     "svg",
+    "layout",
+    "multi-layer layout",
+    "hybrid layout",
+    "coordinated layout",
     "foreignObject"
   ],
-  "type": "module",
-  "scripts": {
-    "prepack": "tsdown"
+  "homepage": "https://github.com/devgru/lay-lay#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgru/lay-lay.git"
   },
-  "types": "dist/index.d.ts",
-  "module": "dist/index.js",
+  "license": "MIT",
+  "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     }
   },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "scripts": {
+    "prepack": "tsdown"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.4"
+  },
   "peerDependencies": {
-    "react": "19"
+    "react": "^19.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

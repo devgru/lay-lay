@@ -1,28 +1,28 @@
 {
   "name": "@lay-lay/playground",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "scripts": {
-    "dev": "vite --port 1414",
     "build": "tsc -b && vite build",
+    "dev": "vite --port 1414",
     "preview": "vite preview"
   },
   "devDependencies": {
     "@lay-lay/core": "workspace:*",
     "@lay-lay/stack": "workspace:*",
     "@react-hook/window-size": "^3.1.1",
-    "@types/d3-scale": "^4.0.8",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@types/d3-scale": "^4.0.9",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "@vitejs/plugin-react-swc": "^3.9.0",
     "d3-scale": "^4.0.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "typescript": "5.8",
-    "vite": "^6.3.2"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
