@@ -1,11 +1,13 @@
 {
-  "name": "@lay-lay/datalayer",
+  "name": "@lay-lay/data-layer",
   "version": "0.1.0",
-  "description": "Charts, powered by React and D3, out of the box",
+  "description": "Lays elements out to visualize a dataset",
   "keywords": [
     "react",
     "svg",
     "charts",
+    "data visualization",
+    "dataviz",
     "d3"
   ],
   "homepage": "https://github.com/devgru/lay-lay#readme",

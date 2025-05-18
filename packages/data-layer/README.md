@@ -1,8 +1,8 @@
-# @lay-lay/datalayer
+# @lay-lay/data-layer
 
 Part of the [Layered layouts](https://github.com/devgru/lay-lay) project.
 
-> Create React-based charts using [d3](https://d3js.org) utilities encapsulated in React elements.
+> Data layer lays elements out to visualize a dataset. Create React-based charts using [d3](https://d3js.org) utilities encapsulated in React elements.
 
 Exported components are described in [docs/components](./docs/components) directory.
 
@@ -10,7 +10,7 @@ Exported components are described in [docs/components](./docs/components) direct
 
 ```tsx
 import React from 'react';
-import { BasicChart } from '@lay-lay/datalayer';
+import { BasicChart } from '@lay-lay/data-layer';
 import { scaleLinear } from 'd3-scale';
 
 const MyChart = () => {
