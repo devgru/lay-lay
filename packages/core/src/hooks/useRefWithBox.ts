@@ -1,4 +1,8 @@
-import type { RefObjectWithBox, SVGOrHTMLElement } from '../types.ts';
+import type {
+  RefObjectWithBox,
+  RefObjectWithFilledBox,
+  SVGOrHTMLElement,
+} from '../types.ts';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useGetOrigin } from '../contexts.ts';
 
@@ -13,16 +17,17 @@ export const useRefWithBox = <
   const [left, updateLeft] = useState<number | undefined>();
   const [top, updateTop] = useState<number | undefined>();
 
-  const internalRef: RefObjectWithBox<E> = ref as RefObjectWithBox<E>;
-  if (internalRef.box === undefined || internalRef.size === undefined) {
+  const refWithBox: RefObjectWithBox<E> = ref as RefObjectWithBox<E>;
+  if (refWithBox.box === undefined) {
     if (
       width !== undefined &&
       height !== undefined &&
       left !== undefined &&
       top !== undefined
     ) {
-      internalRef.size = { width, height };
-      internalRef.box = {
+      const filledRef = refWithBox as unknown as RefObjectWithFilledBox<E>;
+      filledRef.size = { width, height };
+      filledRef.box = {
         left: left,
         horizontalCenter: left + width / 2,
         right: left + width,
@@ -32,18 +37,18 @@ export const useRefWithBox = <
       };
     }
   } else {
-    internalRef.size.width = width!;
-    internalRef.size.height = height!;
-    internalRef.box.left = left!;
-    internalRef.box.horizontalCenter = left! + width! / 2;
-    internalRef.box.right = left! + width!;
-    internalRef.box.top = top!;
-    internalRef.box.verticalCenter = top! + height! / 2;
-    internalRef.box.bottom = top! + height!;
+    refWithBox.size.width = width!;
+    refWithBox.size.height = height!;
+    refWithBox.box.left = left!;
+    refWithBox.box.horizontalCenter = left! + width! / 2;
+    refWithBox.box.right = left! + width!;
+    refWithBox.box.top = top!;
+    refWithBox.box.verticalCenter = top! + height! / 2;
+    refWithBox.box.bottom = top! + height!;
   }
 
   useLayoutEffect(() => {
-    const element = internalRef.current;
+    const element = refWithBox.current;
     if (element === null) {
       return;
     }
@@ -56,5 +61,5 @@ export const useRefWithBox = <
     updateTop(top - y);
   });
 
-  return internalRef;
+  return refWithBox;
 };

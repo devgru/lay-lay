@@ -3,11 +3,21 @@ import type { HTMLAttributes, Ref, RefObject, SVGAttributes } from 'react';
 export type NullableRefObject<E> = RefObject<E | null>;
 
 export type RefObjectWithSize<E> = NullableRefObject<E> & {
-  size?: Size;
+  size: Size | undefined;
 };
 
-export type RefObjectWithBox<E> = RefObjectWithSize<E> & {
-  box?: Box;
+export type RefObjectWithBox<E> =
+  | RefObjectWithFilledBox<E>
+  | RefObjectWithEmptyBox<E>;
+
+export type RefObjectWithFilledBox<E> = NullableRefObject<E> & {
+  box: Box;
+  size: Size;
+};
+
+export type RefObjectWithEmptyBox<E> = NullableRefObject<E> & {
+  box: undefined;
+  size: undefined;
 };
 
 export interface HtmlWrapperProps

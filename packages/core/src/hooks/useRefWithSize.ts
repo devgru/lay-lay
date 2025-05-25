@@ -8,18 +8,18 @@ export const useRefWithSize = <
 
   const [width, updateWidth] = useState<number | undefined>();
   const [height, updateHeight] = useState<number | undefined>();
-  const internalRef: RefObjectWithSize<E> = ref as RefObjectWithSize<E>;
-  if (internalRef.size === undefined) {
+  const refWithSize: RefObjectWithSize<E> = ref as RefObjectWithSize<E>;
+  if (refWithSize.size === undefined) {
     if (width !== undefined && height !== undefined) {
-      internalRef.size = { width, height };
+      refWithSize.size = { width, height };
     }
   } else {
-    internalRef.size.width = width!;
-    internalRef.size.height = height!;
+    refWithSize.size.width = width!;
+    refWithSize.size.height = height!;
   }
 
   useLayoutEffect(() => {
-    const element = internalRef.current;
+    const element = refWithSize.current;
     if (element === null) {
       return;
     }
@@ -30,5 +30,5 @@ export const useRefWithSize = <
     updateHeight(height);
   });
 
-  return internalRef;
+  return refWithSize;
 };

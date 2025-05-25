@@ -28,7 +28,7 @@ const InnerComponent = () => {
         </div>
       </div>
       <svg style={style}>
-        {ref.box && ref.size && (
+        {ref.box && (
           <rect
             x={ref.box.left}
             y={ref.box.top}
