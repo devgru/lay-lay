@@ -1,0 +1,41 @@
+{
+  "name": "@lay-lay/z-order",
+  "version": "0.1.0",
+  "description": "React component that orders its children",
+  "keywords": [
+    "react",
+    "svg"
+  ],
+  "homepage": "https://github.com/devgru/lay-lay/blob/main/packages/z-order/README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devgru/lay-lay.git"
+  },
+  "license": "MIT",
+  "author": "Dima Semyushkin <git@devg.ru> (https://devg.ru)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "tsdown"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.4"
+  },
+  "peerDependencies": {
+    "@lay-lay/core": "workspace:*",
+    "react": "^19.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
