@@ -31,4 +31,4 @@ const MyChart = () => {
 
 ## Legacy
 
-Versions prior to 0.0.23 are published under `react-chart-engine` name.
+The library was originally published under `react-chart-engine` name.
