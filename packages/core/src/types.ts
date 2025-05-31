@@ -20,6 +20,14 @@ export type RefObjectWithEmptyBox<E> = NullableRefObject<E> & {
   size: undefined;
 };
 
+export type RefObjectWithAnchor<E> = NullableRefObject<E> & {
+  anchor?: Anchor;
+};
+
+export type RefObjectWithGuide<E> = NullableRefObject<E> & {
+  guide?: number | undefined;
+};
+
 export interface HtmlWrapperProps
   extends Omit<SVGAttributes<SVGForeignObjectElement>, 'height'> {
   ref?: Ref<HTMLDivElement>;
@@ -48,10 +56,20 @@ export interface Box {
   bottom: number;
 }
 
-export interface Origin {
+interface XY {
   x: number;
   y: number;
 }
+
+export type Anchor = XY;
+
+export type HorizontalAttachment = 'left' | 'center' | 'right';
+
+export type VerticalAttachment = 'top' | 'center' | 'bottom';
+
+export type GuideAttachment = keyof Box;
+
+export type Origin = XY;
 
 export type SizeSetter = (width: number, height: number) => void;
 

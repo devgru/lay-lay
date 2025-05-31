@@ -1,6 +1,6 @@
 import {
   SvgOrigin,
-  useRefWithBox,
+  useRefWithGuide,
   useRefWithSize,
   useSizeObserver,
   type SizeSetter,
@@ -10,9 +10,8 @@ import { useLayoutEffect } from 'react';
 
 function G({ setSize }: { setSize: SizeSetter }) {
   const ref = useRefWithSize<SVGGElement>();
-  const rectARef = useRefWithBox<SVGRectElement>();
-  const rectBRef = useRefWithBox<SVGRectElement>();
-  const rectCRef = useRefWithBox<SVGRectElement>();
+  const rectARef = useRefWithGuide<SVGRectElement>('bottom');
+  const rectBRef = useRefWithGuide<SVGRectElement>('bottom');
 
   useLayoutEffect(() => {
     if (ref.size) {
@@ -23,23 +22,17 @@ function G({ setSize }: { setSize: SizeSetter }) {
   return (
     <g ref={ref}>
       <rect width={50} height={50} ref={rectARef} fill="red" />
-      {rectARef.box && (
+      {rectARef.guide !== undefined && (
         <rect
           width={50}
           height={50}
-          y={rectARef.box.bottom}
+          y={rectARef.guide}
           ref={rectBRef}
           fill="green"
         />
       )}
-      {rectBRef.box && (
-        <rect
-          width={50}
-          height={50}
-          y={rectBRef.box.bottom}
-          ref={rectCRef}
-          fill="blue"
-        />
+      {rectBRef.guide !== undefined && (
+        <rect width={50} height={50} y={rectBRef.guide} fill="blue" />
       )}
     </g>
   );
