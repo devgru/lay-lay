@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 export const useSizeObserver = (): SizeObserver => {
   const [width, setWidth] = useState<number | undefined>(undefined);
   const [height, setHeight] = useState<number | undefined>(undefined);
+
   const setSize = useCallback(
     (width: number, height: number) => {
       setWidth(width);
@@ -11,6 +12,7 @@ export const useSizeObserver = (): SizeObserver => {
     },
     [setWidth, setHeight],
   );
+
   return {
     width,
     height,

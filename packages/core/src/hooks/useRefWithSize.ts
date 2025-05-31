@@ -25,7 +25,6 @@ export const useRefWithSize = <
     }
 
     const { width, height } = element.getBoundingClientRect();
-
     updateWidth(width);
     updateHeight(height);
   });
